@@ -2,3 +2,55 @@
     ViewData["Title"] = "Contact Us";
 }
 
+<div class="page-container">
+    <div class="contact-page-container">
+        <div class="contact-page">
+            <h1 class="contact-title">Get in Touch</h1>
+            <p class="contact-intro">
+                We're here to help and answer any questions you might have. We look forward to hearing from you.
+            </p>
+            <div class="contact-content">
+                <div class="contact-details">
+                    <div class="contact-box">
+                        <i class="fas fa-envelope contact-icon"></i>
+                        <p>Email: <span>support@khumalocraft.com</span></p>
+                    </div>
+                    <div class="contact-box">
+                        <i class="fas fa-phone contact-icon"></i>
+                        <p>Phone: <span>+123 456 7890</span></p>
+                    </div>
+                    <div class="contact-box">
+                        <i class="fas fa-map-marker-alt contact-icon"></i>
+                        <p>Address: <span>123 Craft Lane, Artisan City, World</span></p>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message:</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="contact-submit-btn">Send Message</button>
+                    </form>
+                    <div class="loading-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        <p>Sending your message...</p>
+                    </div>
+                    <div class="success-message" style="display: none;">
+                        <i class="fas fa-check-circle success-icon"></i>
+                        <p>Thank you! Your message has been sent successfully.</p>
+                        <a href="@Url.Action("Work", "Home")" class="btn btn-primary">Explore Our Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
