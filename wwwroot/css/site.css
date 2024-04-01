@@ -1,0 +1,75 @@
+/* Site-wide CSS */
+:root {
+    --kc-main-bg: #F5F1E6; /*Main background color*/
+    --kc-secondary-bg: #EDE6DB; /*Secondary background color*/
+    --kc-main-text: #5C3A1E; /*Main text color*/
+    --kc-secondary-text: #7D6B55; /*Secondary text color*/
+    --kc-accent-text: #DAA520; /*Accent text color (links, CTA buttons, etc.)*/
+    --kc-navbar-bg: #5C3A1E; /*Navbar background color*/
+    --kc-navbar-text: #FFFFFF; /*Navbar text color*/
+    --kc-button-bg: #DAA520; /*Button background color*/
+    --kc-button-text: #FFFFFF; /*Button text color*/
+    --kc-footer-bg: #40342A; /*Footer background color*/
+    --kc-highlight-color: #C27B00; /*Highlight color*/
+}
+/***************************************************************************************************************/
+/* Global styles */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--kc-main-bg);
+    color: var(--kc-main-text);
+}
+
+.container {
+    max-width: 100%;
+    padding: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--kc-navbar-bg);
+    color: var(--kc-navbar-text);
+    top: 0;
+    z-index: 1000;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.nav-brand {
+    flex-shrink: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    margin-bottom: 0;
+}
+
+.nav-item {
+    margin-left: 1rem;
+}
+
+.navbar-nav {
+    margin-left: auto;
+}
+
+.nav-link:hover {
+    color: var(--kc-accent-text);
+}
+
+.kc-footer {
+    background-color: var(--kc-footer-bg);
+    color: var(--kc-secondary-text);
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
