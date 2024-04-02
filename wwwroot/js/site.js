@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // Contact Page
 /* This script is used to simulate a successful form submission by hiding the form
 and showing a success message after a delay*/
+// Code based off: https://www.freecodecamp.org/news/how-to-submit-a-form-with-javascript/
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('contact-form');
     const loadingSpinner = document.querySelector('.loading-spinner');
@@ -35,35 +36,22 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 //<-------------------------------------------------------------------------------------->
-// Work Page
+// Work Page script to add functionality to the add to cart buttons and the floating cart
+// Code based off: https://phppot.com/javascript/javascript-shopping-cart/#:~:text=How%20to%20build%20a%20JavaScript%20shopping%20cart%20using,Empty%20the%20cart%20by%20unsetting%20the%20sessionStorage%20instance.
 document.addEventListener('DOMContentLoaded', () => {
+    // Selecting the 'Add to Cart' buttons
     const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
     const cartItemsList = document.querySelector('.cart-items');
     const cartTotalAmount = document.getElementById('cart-total-amount');
-    const buyNowButton = document.querySelector('.btn-buy-now');
-    const floatingCart = document.getElementById('floating-cart');
-    const cartContainer = document.querySelector('.cart-container');
     const cartItemCount = document.getElementById('cart-item-count');
     const cartOverlay = document.getElementById('cart-overlay');
     const closeCartBtn = document.querySelector('.close-cart');
-    floatingCart.addEventListener('click', () => {
-        cartOverlay.style.display = 'flex';
-    });
-    closeCartBtn.addEventListener('click', () => {
-        cartOverlay.style.display = 'none';
-    });
+    const floatingCart = document.getElementById('floating-cart');
+
+    // Cart array to store the items
     let cart = [];
-    cartContainer.style.display = 'none';
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
-            addToCart(name, price);
-        });
-    });
-    floatingCart.addEventListener('click', () => {
-        cartContainer.style.display = cartContainer.style.display === 'none' ? 'block' : 'none';
-    });
+
+    // Function to add an item to the cart array
     function addToCart(name, price) {
         const existingItem = cart.find(item => item.name === name);
         if (existingItem) {
@@ -73,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateCart();
     }
+    // Function to update the cart display in the floating cart
     function updateCart() {
         cartItemsList.innerHTML = '';
         let totalAmount = 0;
@@ -80,10 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cart.forEach(item => {
             const li = document.createElement('li');
             li.classList.add('cart-item');
-            li.innerHTML = `
-                <span>${item.name} x ${item.quantity}</span>
-                <span>R${(item.price * item.quantity).toFixed(2)}</span>
-            `;
+            li.innerHTML = `<span>${item.name} x ${item.quantity}</span><span>R${(item.price * item.quantity).toFixed(2)}</span>`;
             cartItemsList.appendChild(li);
             totalAmount += item.price * item.quantity;
             itemCount += item.quantity;
@@ -91,11 +77,27 @@ document.addEventListener('DOMContentLoaded', () => {
         cartTotalAmount.textContent = totalAmount.toFixed(2);
         cartItemCount.textContent = itemCount;
     }
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const name = button.getAttribute('data-name');
+            const price = parseFloat(button.getAttribute('data-price'));
+            addToCart(name, price);
+        });
+    });
+    floatingCart.addEventListener('click', () => {
+        cartOverlay.style.display = 'flex';
+    });
+    closeCartBtn.addEventListener('click', () => {
+        cartOverlay.style.display = 'none';
+    });
+    // Simulate a purchase by emptying the cart and displaying a thank you message using a simple alert
+    const buyNowButton = document.querySelector('.btn-buy-now');
     buyNowButton.addEventListener('click', () => {
         alert('Thank you for your purchase!');
         cart = [];
         updateCart();
-        cartContainer.style.display = 'none';
+        cartOverlay.style.display = 'none';
     });
 });
+
 //<--------------------------------------END---------------------------------------------->
