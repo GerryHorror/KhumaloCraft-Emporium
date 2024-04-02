@@ -253,8 +253,9 @@ nav {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     align-items: start;
+    justify-content: center;
     max-width: 1200px;
-    margin: 4rem auto;
+    margin-top: 6rem;
 }
 
 .image-group {
