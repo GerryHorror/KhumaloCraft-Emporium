@@ -245,7 +245,6 @@ nav {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .content {
@@ -255,7 +254,7 @@ nav {
     align-items: start;
     justify-content: center;
     max-width: 1200px;
-    margin-top: 6rem;
+    margin-top: 7rem;
 }
 
 .image-group {

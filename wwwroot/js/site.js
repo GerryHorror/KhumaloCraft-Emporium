@@ -99,5 +99,4 @@ document.addEventListener('DOMContentLoaded', () => {
         cartOverlay.style.display = 'none';
     });
 });
-
 //<--------------------------------------END---------------------------------------------->
