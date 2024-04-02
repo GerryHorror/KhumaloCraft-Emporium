@@ -161,6 +161,7 @@ nav {
     white-space: nowrap;
     margin: 0 auto;
     letter-spacing: .15em;
+    /* Guide for typing effect: https://css-tricks.com/snippets/css/typewriter-effect/ */
     animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
 }
 
@@ -216,6 +217,7 @@ nav {
     text-decoration: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     opacity: 0;
+    /* Guide for bounce effect: https://www.tutorialspoint.com/css/css_animation_bounce_in.htm */
     animation: fadeInUp 1s ease-out forwards, bounceIn 1s ease-out forwards;
     animation-delay: 5s;
 }
@@ -534,7 +536,7 @@ nav {
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1050; /* Ensure it's on top */
+    z-index: 1050; 
 }
 
 .cart-popup {
