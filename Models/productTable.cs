@@ -15,6 +15,14 @@ namespace CLDVWebAppST10046280.Models
         public string Category { get; set; }
         public bool Available { get; set; }
 
+        public string Availability
+        {
+            get
+            {
+                return Available ? "In Stock" : "Out of Stock";
+            }
+        }
+
         public int insert_Product(productTable m)
         {
             try
@@ -33,38 +41,6 @@ namespace CLDVWebAppST10046280.Models
 
                     return rowsAffected;
                 }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it appropriately
-                throw ex;
-            }
-        }
-
-        // Add a method to retrieve all products from the database
-        public static List<productTable> GetProducts()
-        {
-            List<productTable> products = new List<productTable>();
-            try
-            {
-                using (SqlConnection con = new SqlConnection(con_string))
-                {
-                    string sql = "SELECT * FROM productTable";
-                    SqlCommand cmd = new SqlCommand(sql, con);
-                    con.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
-                    {
-                        productTable product = new productTable();
-                        product.ProductID = Convert.ToInt32(dr["productID"]);
-                        product.Name = dr["productName"].ToString();
-                        product.Price = Convert.ToDecimal(dr["productPrice"]);
-                        product.Category = dr["productCategory"].ToString();
-                        product.Available = Convert.ToBoolean(dr["productAvailability"]);
-                        products.Add(product);
-                    }
-                }
-                return products;
             }
             catch (Exception ex)
             {

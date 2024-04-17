@@ -1,4 +1,6 @@
 using CLDVWebApp.Models;
+using CLDVWebAppST10046280.Models;
+using CLDVWebAppST10046280.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -54,6 +56,14 @@ namespace CLDVWebApp.Controllers
         public IActionResult WorkTest()
         {
             return View();
+        }
+
+        public IActionResult Product()
+        {
+            // Created a new instance of the ProductDisplayModel class and called the GetProducts method to get the products
+            var products = new ProductDisplayModel().GetProducts();
+            // Returned the products to the Product view to display the products
+            return View("Product", products);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
