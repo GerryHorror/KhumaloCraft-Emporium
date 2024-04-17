@@ -5,19 +5,19 @@ namespace CLDVWebApp.Controllers
 {
     public class UserController : Controller
     {
-        public userTable newUser = new userTable();
+        public userTable usrtbl = new userTable();
 
         [HttpPost]
-        public ActionResult About(userTable Users)
+        public ActionResult SignUp(userTable Users)
         {
-            var result = newUser.insert_User(Users);
-            return RedirectToAction("Privacy", "Index");
+            var result = usrtbl.insert_User(Users);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        public ActionResult About()
+        public ActionResult SignUp()
         {
-            return View();
+            return View(usrtbl);
         }
     }
 }

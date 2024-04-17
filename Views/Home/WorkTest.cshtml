@@ -1,0 +1,21 @@
+﻿@model CLDVWebAppST10046280.Models.productTable
+
+@{
+    ViewData["Title"] = "Work Test";
+}
+
+<body>
+    <h1>Update Product Database</h1>
+    <p>Please complete the form below:</p>
+    <form asp-controller="Product" asp-action="WorkTest" method="post">
+        <input type="text" name="Name" placeholder="Name" required>
+        <input type="number" step="0.01" name="Price" placeholder="Price" required />
+        <input type="text" name="Category" placeholder="Category" required />
+        <label for="Available">Availability:</label>
+        <select id="Available" name="Available">
+            <option value="true">In Stock</option>
+            <option value="false">Out of Stock</option>
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+</body> 

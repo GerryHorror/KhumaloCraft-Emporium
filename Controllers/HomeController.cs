@@ -33,6 +33,28 @@ namespace CLDVWebApp.Controllers
             return View();
         }
 
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        public IActionResult LoginSuccess(int userID)
+        {
+            userTable userDetails = null;
+            ViewData["userID"] = userID;
+            return View(userDetails);
+        }
+
+        // This is a test method to check if the WorkTest view is working
+        public IActionResult WorkTest()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

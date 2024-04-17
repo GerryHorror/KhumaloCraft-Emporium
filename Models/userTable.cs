@@ -1,34 +1,44 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Data.SqlClient;
 
 namespace CLDVWebApp.Models
 {
-    public class userTable : Controller
+    public class userTable
     {
-        // Connection string to connect to the database
-        public static string connectionString = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
-        // Connection object to connect to the database
-        public static SqlConnection connection = new SqlConnection(connectionString);
+        public static string con_string = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 
-        // User properties to be stored in the database
+        public static SqlConnection con = new SqlConnection(con_string);
+
+        public int UserID { get; set; }
+
         public string Name { get; set; }
 
         public string Surname { get; set; }
+
         public string Email { get; set; }
 
-        // Method to insert user data into the database table (userTable)
+        public string Password { get; set; }
+
         public int insert_User(userTable m)
         {
-            string sql = "INSERT INTO userTable (userName, userSurname, userEmail) VALUES (@Name, @Surname, @Email)";
-            connection.Open();
-            SqlCommand cmd = new SqlCommand(sql, connection);
-            cmd.Parameters.AddWithValue("@Name", m.Name);
-            cmd.Parameters.AddWithValue("@Surname", m.Surname);
-            cmd.Parameters.AddWithValue("@Email", m.Email);
-            int rowsAffected = cmd.ExecuteNonQuery();
-            connection.Close();
-            return rowsAffected;
+            try
+            {
+                string sql = "INSERT INTO userTable (userName, userSurname, userEmail, userPassword) VALUES (@Name, @Surname, @Email, @Password)";
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Name", m.Name);
+                cmd.Parameters.AddWithValue("@Surname", m.Surname);
+                cmd.Parameters.AddWithValue("@Email", m.Email);
+                cmd.Parameters.AddWithValue("@Password", m.Password);
+                con.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                con.Close();
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                // For now, rethrow the exception
+                throw ex;
+            }
         }
     }
 }

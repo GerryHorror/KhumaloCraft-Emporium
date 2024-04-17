@@ -1,18 +1,18 @@
 /* Site-wide CSS */
 :root {
-    --kc-main-bg: #F5F1E6; /*Main background color*/
-    --kc-secondary-bg: #EDE6DB; /*Secondary background color*/
-    --kc-main-text: #5C3A1E; /*Main text color*/
-    --kc-secondary-text: #7D6B55; /*Secondary text color*/
-    --kc-accent-text: #DAA520; /*Accent text color (links, CTA buttons, etc.)*/
-    --kc-navbar-bg: #5C3A1E; /*Navbar background color*/
-    --kc-navbar-text: #FFFFFF; /*Navbar text color*/
-    --kc-button-bg: #DAA520; /*Button background color*/
-    --kc-button-text: #FFFFFF; /*Button text color*/
-    --kc-footer-bg: #40342A; /*Footer background color*/
-    --kc-highlight-color: #C27B00; /*Highlight color*/
+    --kc-main-bg: #F5F1E6;
+    --kc-secondary-bg: #EDE6DB;
+    --kc-main-text: #5C3A1E;
+    --kc-secondary-text: #7D6B55;
+    --kc-accent-text: #DAA520;
+    --kc-navbar-bg: #5C3A1E;
+    --kc-navbar-text: #FFFFFF;
+    --kc-button-bg: #DAA520;
+    --kc-button-text: #FFFFFF;
+    --kc-footer-bg: #40342A;
+    --kc-highlight-color: #C27B00;
 }
-/***************************************************************************************************************/
+
 /* Global styles */
 html, body {
     height: 100%;
@@ -35,8 +35,7 @@ nav {
     color: var(--kc-navbar-text);
     top: 0;
     z-index: 1000;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 1rem;
 }
 
 .nav-brand {
@@ -72,8 +71,9 @@ nav {
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 1rem 0;
 }
-/***************************************************************************************************************/
+
 /* Home Page styles */
 .index-header {
     position: relative;
@@ -86,7 +86,6 @@ nav {
     overflow: hidden;
 }
 
-/* Background image slideshow styles */
 .bg-img {
     position: absolute;
     top: 0;
@@ -111,22 +110,22 @@ nav {
 
 #bg-img1 {
     background-image: url('../images/home4.jpg');
-    animation-delay: -22.5s;
+    animation-delay: 0s;
 }
 
 #bg-img2 {
     background-image: url('../images/home3.jpg');
-    animation-delay: -15s;
+    animation-delay: 7.5s;
 }
 
 #bg-img3 {
     background-image: url('../images/home2.jpg');
-    animation-delay: -7.5s;
+    animation-delay: 15s;
 }
 
 #bg-img4 {
     background-image: url('../images/home1.jpg');
-    animation-delay: 0s;
+    animation-delay: 22.5s;
 }
 
 @keyframes slide {
@@ -143,7 +142,6 @@ nav {
     }
 }
 
-/* Text styles */
 .index-prime-head, .index-sec-head, .index-btn {
     position: relative;
     z-index: 1;
@@ -161,7 +159,6 @@ nav {
     white-space: nowrap;
     margin: 0 auto;
     letter-spacing: .15em;
-    /* Guide for typing effect: https://css-tricks.com/snippets/css/typewriter-effect/ */
     animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
 }
 
@@ -217,7 +214,6 @@ nav {
     text-decoration: none;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     opacity: 0;
-    /* Guide for bounce effect: https://www.tutorialspoint.com/css/css_animation_bounce_in.htm */
     animation: fadeInUp 1s ease-out forwards, bounceIn 1s ease-out forwards;
     animation-delay: 5s;
 }
@@ -239,7 +235,7 @@ nav {
         transform: translateY(-15px);
     }
 }
-/***************************************************************************************************************/
+
 /* About Page styles */
 .about-page {
     display: flex;
@@ -365,7 +361,7 @@ nav {
         opacity: 1;
     }
 }
-/***************************************************************************************************************/
+
 /* Work Page styles */
 .work-page {
     padding: 2rem;
@@ -556,7 +552,7 @@ nav {
     font-size: 1.5rem;
     cursor: pointer;
 }
-/***************************************************************************************************************/
+
 /* Contact Page Styles */
 .contact-page-container {
     padding-top: 40px;
@@ -741,4 +737,159 @@ nav {
     .btn-primary:hover {
         background-color: var(--kc-highlight-color);
     }
-/***************************************************************************************************************/
+
+/* Media Queries /
+/ Extra small devices (phones, up to 480px) */
+@media only screen and (max-width: 480px) {
+    .index-prime-head {
+        font-size: 2rem;
+        white-space: normal;
+    }
+
+        .index-prime-head br {
+            display: inline;
+        }
+
+        .index-prime-head span {
+            display: inline-block;
+            overflow: hidden;
+            border-right: .15em solid var(--kc-accent-text);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+    .index-sec-head {
+        font-size: 1rem;
+    }
+
+    .index-btn {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+        margin-top: 3rem;
+    }
+
+    .artist {
+        width: 100%;
+        height: auto;
+    }
+
+    .about-description {
+        grid-column: auto;
+        margin-top: 2rem;
+    }
+
+    .work-gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-details,
+    .contact-form {
+        flex-basis: 100%;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .index-prime-head {
+        font-size: 2.5rem;
+        white-space: nowrap;
+    }
+
+    .index-prime-head br {
+        display: none;
+    }
+
+    .index-prime-head span {
+        display: inline-block;
+        overflow: hidden;
+        border-right: .15em solid var(--kc-accent-text);
+        white-space: nowrap;
+        animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    }
+
+    .index-sec-head {
+        font-size: 1.5rem;
+    }
+
+    .index-btn {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+    }
+
+    .content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .artist {
+        width: 100%;
+        height: auto;
+    }
+
+    .about-description {
+        grid-column: span 2;
+    }
+
+    .work-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .index-prime-head {
+        font-size: 2.5rem;
+    }
+
+    .index-sec-head {
+        font-size: 1.8rem;
+    }
+
+    .index-btn {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+
+    .content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .artist {
+        width: 371px;
+        height: 247px;
+    }
+
+    .about-description {
+        grid-column: 2;
+    }
+
+    .work-gallery {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .index-prime-head {
+        font-size: 3rem;
+    }
+
+    .index-sec-head {
+        font-size: 2rem;
+    }
+
+    .index-btn {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .content {
+        max-width: 1200px;
+    }
+}
