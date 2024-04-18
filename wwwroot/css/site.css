@@ -1,16 +1,16 @@
 /* Site-wide CSS */
 :root {
-    --kc-main-bg: #F5F1E6;
-    --kc-secondary-bg: #EDE6DB;
-    --kc-main-text: #5C3A1E;
-    --kc-secondary-text: #7D6B55;
-    --kc-accent-text: #DAA520;
-    --kc-navbar-bg: #5C3A1E;
-    --kc-navbar-text: #FFFFFF;
-    --kc-button-bg: #DAA520;
-    --kc-button-text: #FFFFFF;
-    --kc-footer-bg: #40342A;
-    --kc-highlight-color: #C27B00;
+    --kc-main-bg: #F5F1E6; /* Main background color */
+    --kc-secondary-bg: #EDE6DB; /* Secondary background color */
+    --kc-main-text: #5C3A1E; /* Main text color */
+    --kc-secondary-text: #7D6B55; /* Secondary text color */
+    --kc-accent-text: #DAA520; /* Accent text color */
+    --kc-navbar-bg: #5C3A1E; /* Navbar background color */
+    --kc-navbar-text: #FFFFFF; /* Navbar text color */
+    --kc-button-bg: #DAA520; /* Button background color */
+    --kc-button-text: #FFFFFF; /* Button text color */
+    --kc-footer-bg: #40342A; /* Footer background color */
+    --kc-highlight-color: #C27B00; /* Highlight color  (hover, active, etc.) */
 }
 
 /* Global styles */
@@ -799,17 +799,17 @@ nav {
         white-space: nowrap;
     }
 
-    .index-prime-head br {
-        display: none;
-    }
+        .index-prime-head br {
+            display: none;
+        }
 
-    .index-prime-head span {
-        display: inline-block;
-        overflow: hidden;
-        border-right: .15em solid var(--kc-accent-text);
-        white-space: nowrap;
-        animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-    }
+        .index-prime-head span {
+            display: inline-block;
+            overflow: hidden;
+            border-right: .15em solid var(--kc-accent-text);
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
 
     .index-sec-head {
         font-size: 1.5rem;
