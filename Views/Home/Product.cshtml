@@ -63,7 +63,16 @@
                 <p>Price: @product.ProductPrice</p>
                 <p>Category: @product.ProductCategory</p>
                 <p>Availability: @product.Availability</p>
-                <button class="btn-add-to-cart">Add to Cart</button>
+
+                <!-- Form for adding products to the cart -->
+                <form asp-controller="Home" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="ProductID" value="@product.ProductID" />
+                    <input type="hidden" name="ProductName" value="@product.ProductName" />
+                    <input type="hidden" name="ProductPrice" value="@product.ProductPrice" />
+                    <input type="hidden" name="ProductCategory" value="@product.ProductCategory" />
+                    <input type="hidden" name="Availability" value="@product.Availability" />
+                    <button type="submit" class="btn-add-to-cart">Add to Cart</button>
+                </form>
             </div>
         }
     </div>

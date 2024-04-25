@@ -738,9 +738,16 @@ nav {
         background-color: var(--kc-highlight-color);
     }
 
-/* Media Queries /
-/ Extra small devices (phones, up to 480px) */
 @media only screen and (max-width: 480px) {
+    .bg-img {
+        background-size: cover;
+        background-position: center;
+    }
+
+    .index-header {
+        height: 100vh;
+    }
+
     .index-prime-head {
         font-size: 2rem;
         white-space: normal;
@@ -794,6 +801,11 @@ nav {
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+    .bg-img {
+        background-size: cover;
+        background-position: center;
+    }
+
     .index-prime-head {
         font-size: 2.5rem;
         white-space: nowrap;
@@ -840,6 +852,11 @@ nav {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+    .bg-img {
+        background-size: cover;
+        background-position: center;
+    }
+
     .index-prime-head {
         font-size: 2.5rem;
     }
