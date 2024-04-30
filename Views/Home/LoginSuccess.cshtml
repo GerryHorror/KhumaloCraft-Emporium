@@ -1,7 +1,8 @@
-﻿@model CLDVWebApp.Models.userTable
-
-@{
-    ViewData["Title"] = "Login Success";
+﻿@{
+    int userId = Context.Session.GetInt32("UserId") ?? 0;
+    string userName = Context.Session.GetString("UserName");
+    string userSurname = Context.Session.GetString("UserSurname");
+    string userEmail = Context.Session.GetString("UserEmail");
 }
 <style>
     /* Success Message Styles */
@@ -44,9 +45,9 @@
 
 <div class="success">
     <h2>Login Successful!</h2>
-    <p>Welcome, @Model.Name @Model.Surname!</p>
+    <p>Welcome, @userName @userSurname!</p>
     <ul>
-        <li>User ID: @Model.UserID</li>
-        <li>Email: @Model.Email</li>
+        <li>User ID: @userId</li>
+        <li>Email: @userEmail</li>
     </ul>
 </div>

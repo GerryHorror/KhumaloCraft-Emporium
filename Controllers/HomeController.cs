@@ -3,6 +3,7 @@ using CLDVWebAppST10046280.Models;
 using CLDVWebAppST10046280.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace CLDVWebApp.Controllers
 {
@@ -64,6 +65,31 @@ namespace CLDVWebApp.Controllers
             var products = new ProductDisplayModel().GetProducts();
             // Returned the products to the Product view to display the products
             return View("Product", products);
+        }
+
+        // A test method to check if the user details are stored in the session
+        public IActionResult UserDetails()
+        {
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            string userName = HttpContext.Session.GetString("UserName");
+            string userSurname = HttpContext.Session.GetString("UserSurname");
+            string userEmail = HttpContext.Session.GetString("UserEmail");
+
+            if (userId != 0)
+            {
+                var userDetails = new userTable
+                {
+                    UserID = userId,
+                    Name = userName,
+                    Surname = userSurname,
+                    Email = userEmail
+                };
+                return View(userDetails);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Login");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

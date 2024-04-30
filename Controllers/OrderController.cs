@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using CLDVWebAppST10046280.Models;
 
 namespace CLDVWebAppST10046280.Controllers
 {
     public class OrderController : Controller
     {
-        public IActionResult Index()
+        [HttpPost]
+        public IActionResult AddOrder(OrderModel order)
         {
-            return View();
+            order.AddOrder(order);
+            return RedirectToAction("Product", "ProductDisplay");
         }
     }
 }

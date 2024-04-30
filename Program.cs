@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
 namespace CLDVWebApp
 {
     public class Program
@@ -8,6 +13,7 @@ namespace CLDVWebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession(); // Add this line to configure session
 
             var app = builder.Build();
 
@@ -23,6 +29,8 @@ namespace CLDVWebApp
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession(); // Add this line to use session middleware
 
             app.UseAuthorization();
 

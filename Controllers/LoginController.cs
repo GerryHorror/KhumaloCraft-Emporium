@@ -13,8 +13,11 @@ namespace CLDVWebAppST10046280.Controllers
             int userID = loginModel.SelectUser(email, password);
             if (userID != -1)
             {
-                // Fetch user details using the existing userTable model
                 userTable userDetails = FetchUserDetails(userID);
+                HttpContext.Session.SetInt32("UserId", userDetails.UserID);
+                HttpContext.Session.SetString("UserName", userDetails.Name);
+                HttpContext.Session.SetString("UserSurname", userDetails.Surname);
+                HttpContext.Session.SetString("UserEmail", userDetails.Email);
                 return View("~/Views/Home/LoginSuccess.cshtml", userDetails);
             }
             else
