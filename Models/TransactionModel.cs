@@ -8,9 +8,11 @@ namespace CLDVWebAppST10046280.Models
         public int TransactionID { get; set; }
         public int OrderID { get; set; }
         public int ProductID { get; set; }
+        public string ProductName { get; set; }
         public int TransactionQuantity { get; set; }
         public DateTime TransactionDate { get; set; }
         public string TransactionStatus { get; set; }
+        public decimal ProductPrice { get; set; }
     }
 
     public class TransactionTable
@@ -51,22 +53,29 @@ namespace CLDVWebAppST10046280.Models
             {
                 using (SqlConnection con = new SqlConnection(TransactionTable.con_string))
                 {
-                    string sql = @" SELECT t.* FROM transactionTable t
-                                    JOIN orderTable o ON t.orderID = o.orderID
-                                    WHERE o.userID = @UserID";
+                    string sql = @"SELECT t.transactionID, t.orderID, t.productID, t.transactionQuantity, t.transactionDate, t.transactionStatus,
+                           p.productName, p.productPrice
+                           FROM transactionTable t
+                           JOIN orderTable o ON t.orderID = o.orderID
+                           JOIN productTable p ON t.productID = p.productID
+                           WHERE o.userID = @UserID";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@UserID", userId);
                     con.Open();
                     SqlDataReader dr = cmd.ExecuteReader();
                     while (dr.Read())
                     {
-                        TransactionModel transaction = new TransactionModel();
-                        transaction.TransactionID = dr["transactionID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["transactionID"]);
-                        transaction.OrderID = dr["orderID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["orderID"]);
-                        transaction.ProductID = dr["productID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["productID"]);
-                        transaction.TransactionQuantity = dr["transactionQuantity"] == DBNull.Value ? 0 : Convert.ToInt32(dr["transactionQuantity"]);
-                        transaction.TransactionDate = dr["transactionDate"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["transactionDate"]);
-                        transaction.TransactionStatus = dr["transactionStatus"] == DBNull.Value ? string.Empty : dr["transactionStatus"].ToString();
+                        TransactionModel transaction = new TransactionModel
+                        {
+                            TransactionID = dr["transactionID"] != DBNull.Value ? Convert.ToInt32(dr["transactionID"]) : 0,
+                            OrderID = dr["orderID"] != DBNull.Value ? Convert.ToInt32(dr["orderID"]) : 0,
+                            ProductID = dr["productID"] != DBNull.Value ? Convert.ToInt32(dr["productID"]) : 0,
+                            ProductName = dr["productName"].ToString(),
+                            TransactionQuantity = dr["transactionQuantity"] != DBNull.Value ? Convert.ToInt32(dr["transactionQuantity"]) : 0,
+                            TransactionDate = dr["transactionDate"] != DBNull.Value ? Convert.ToDateTime(dr["transactionDate"]) : DateTime.MinValue,
+                            TransactionStatus = dr["transactionStatus"].ToString(),
+                            ProductPrice = dr["productPrice"] != DBNull.Value ? Convert.ToDecimal(dr["productPrice"]) : 0
+                        };
                         transactions.Add(transaction);
                     }
                 }
