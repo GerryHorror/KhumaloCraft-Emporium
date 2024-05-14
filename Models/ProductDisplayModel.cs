@@ -1,4 +1,6 @@
-﻿using System.Data.SqlClient;
+﻿// ProductDisplayModel.cs
+
+using System.Data.SqlClient;
 
 namespace CLDVWebAppST10046280.Models
 {
@@ -48,7 +50,7 @@ namespace CLDVWebAppST10046280.Models
                     while (dr.Read())
                     {
                         ProductDisplayModel product = new ProductDisplayModel();
-                        product.ProductID = dr["prodcutID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["prodcutID"]);
+                        product.ProductID = dr["productID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["productID"]);
                         product.ProductName = dr["productName"] == DBNull.Value ? string.Empty : dr["productName"].ToString();
                         product.ProductPrice = dr["productPrice"] == DBNull.Value ? 0 : Math.Round(Convert.ToDecimal(dr["productPrice"]), 2);
                         product.ProductCategory = dr["productCategory"] == DBNull.Value ? string.Empty : dr["productCategory"].ToString();

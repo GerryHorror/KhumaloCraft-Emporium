@@ -1,20 +1,108 @@
-﻿@{
+﻿@model CLDVWebAppST10046280.Models.ProductViewModel
+@{
     ViewData["Title"] = "Work Test";
+    bool isAdmin = Context.Session.GetInt32("IsAdmin") == 1;
 }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
 
+    h1 {
+        color: #333;
+    }
+
+    form {
+        margin-bottom: 20px;
+    }
+
+    input, select, button {
+        display: block;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .product-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .product-item {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        padding: 20px;
+        width: calc(33.3333% - 20px);
+    }
+
+    .product-item-name {
+        margin: 0 0 10px;
+        font-size: 18px;
+    }
+
+    .btn {
+        background-color: #007bff;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+</style>
 <body>
-    <h1>Update Product Database</h1>
-    <p>Please complete the form below:</p>
-    <form asp-controller="Product" asp-action="WorkTest" method="post">
-        <input type="text" name="Name" placeholder="Name" required>
-        <input type="number" step="0.01" name="Price" placeholder="Price" required />
-        <input type="text" name="Category" placeholder="Category" required />
-        <label for="Available">Availability:</label>
-        <select id="Available" name="Available">
-            <option value="true">In Stock</option>
-            <option value="false">Out of Stock</option>
-        </select>
-        <button type="submit">Submit</button>
-    </form>
- 
-</body> 
+    <!--TODO: This should only be available for admin roles-->
+    @if (isAdmin)
+    {
+        <h1>Update Product Database</h1>
+        <p>Please complete the form below:</p>
+        <form asp-controller="Product" asp-action="WorkTest" method="post">
+            <input type="text" name="Name" placeholder="Name" required>
+            <input type="number" step="0.01" name="Price" placeholder="Price" required />
+            <input type="text" name="Category" placeholder="Category" required />
+            <label for="Available">Availability:</label>
+            <select id="Available" name="Available">
+                <option value="true">In Stock</option>
+                <option value="false">Out of Stock</option>
+            </select>
+            <button type="submit">Submit</button>
+        </form>
+    }
+    <!-- List of all the products currently in the database-->
+    @if (Model.Products.Count > 0)
+    {
+        <h1 class="product-title">Product Listing</h1>
+        <div class="product-gallery">
+            @foreach (var product in Model.Products)
+            {
+                <div class="product-item">
+                    <h2 class="product-item-name">@product.ProductName</h2>
+                    <p>ID: @product.ProductID</p>
+                    <p>Price: @product.ProductPrice</p>
+                    <p>Category: @product.ProductCategory</p>
+                    <p>Availability: @product.Availability</p>
+                    <form asp-controller="Order" asp-action="AddToOrder" method="post">
+                        <input type="hidden" name="productId" value="@product.ProductID" />
+                        <input type="number" name="quantity" min="1" value="1" />
+                        <button type="submit" class="btn btn-primary" @(product.ProductAvailable ? "" : "disabled")>Add to Order</button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No products found.</p>
+    }
+</body>

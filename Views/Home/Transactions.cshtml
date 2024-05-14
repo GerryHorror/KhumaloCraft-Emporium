@@ -1,1 +1,96 @@
-﻿
+﻿@model List<CLDVWebAppST10046280.Models.TransactionModel>
+
+    @{
+    ViewData["Title"] = "Transactions";
+}
+
+<style>
+    .transactions-view {
+        margin-top: 8rem;
+    }
+
+    .user-info {
+        background-color: var(--kc-secondary-bg);
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+    }
+
+    .user-info p {
+        color: var(--kc-main-text);
+        margin-bottom: 0.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: var(--kc-secondary-bg);
+        color: var(--kc-accent-text);
+        font-weight: bold;
+    }
+
+    th,
+    td {
+        padding: 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid var(--kc-secondary-bg);
+    }
+
+    tr:nth-child(even) {
+        background-color: var(--kc-secondary-bg);
+    }
+
+    tr:hover {
+        background-color: var(--kc-highlight-color);
+    }
+    </style>
+
+<div class="transactions-view">
+    <h2>Transactions</h2>
+
+    @if (Context.Session.GetInt32("UserId") != null)
+    {
+        <div class="user-info">
+            <p>User ID: @Context.Session.GetInt32("UserId")</p>
+            <p>User Details: @Context.Session.GetString("UserName") @Context.Session.GetString("UserSurname")</p>
+            <p>User Email: @Context.Session.GetString("UserEmail")</p>
+        </div>
+    }
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Order ID</th>
+                    <th>Product ID</th>
+                    <th>Quantity</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        <td>@transaction.TransactionID</td>
+                        <td>@transaction.OrderID</td>
+                        <td>@transaction.ProductID</td>
+                        <td>@transaction.TransactionQuantity</td>
+                        <td>@transaction.TransactionDate.ToString("yyyy-MM-dd")</td>
+                        <td>@transaction.TransactionStatus</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No transactions found.</p>
+    }
+</div>

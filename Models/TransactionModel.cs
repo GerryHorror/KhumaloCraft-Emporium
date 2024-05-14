@@ -8,61 +8,75 @@ namespace CLDVWebAppST10046280.Models
         public int TransactionID { get; set; }
         public int OrderID { get; set; }
         public int ProductID { get; set; }
+        public int TransactionQuantity { get; set; }
         public DateTime TransactionDate { get; set; }
-        public string ProductName { get; set; }
-        public decimal ProductPrice { get; set; }
+        public string TransactionStatus { get; set; }
+    }
 
+    public class TransactionTable
+    {
         public static string con_string = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 
-        public void InsertTransactions(int orderId, List<int> cart)
+        public int InsertTransaction(TransactionModel m)
         {
-            using (SqlConnection con = new SqlConnection(con_string))
+            try
             {
-                foreach (var productId in cart)
+                using (SqlConnection con = new SqlConnection(con_string))
                 {
-                    string sql = "INSERT INTO TransactionTable (orderID, productID, transactionDate) VALUES (@OrderId, @ProductId, @TransactionDate)";
+                    string sql = "INSERT INTO transactionTable (orderID, productID, transactionQuantity, transactionDate, transactionStatus) VALUES (@OrderID, @ProductID, @TransactionQuantity, @TransactionDate, @TransactionStatus)";
                     SqlCommand cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.AddWithValue("@OrderId", orderId);
-                    cmd.Parameters.AddWithValue("@ProductId", productId);
-                    cmd.Parameters.AddWithValue("@TransactionDate", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@OrderID", m.OrderID);
+                    cmd.Parameters.AddWithValue("@ProductID", m.ProductID);
+                    cmd.Parameters.AddWithValue("@TransactionQuantity", m.TransactionQuantity);
+                    cmd.Parameters.AddWithValue("@TransactionDate", m.TransactionDate);
+                    cmd.Parameters.AddWithValue("@TransactionStatus", m.TransactionStatus);
                     con.Open();
-                    cmd.ExecuteNonQuery();
+                    int rowsAffected = cmd.ExecuteNonQuery();
                     con.Close();
+
+                    return rowsAffected;
                 }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw ex;
             }
         }
 
-        public List<TransactionModel> GetTransactionsByUserId(int userId)
+        public List<TransactionModel> GetTransactionsForUser(int userId)
         {
             List<TransactionModel> transactions = new List<TransactionModel>();
-            using (SqlConnection con = new SqlConnection(con_string))
+            try
             {
-                string sql = @"
-                SELECT t.transactionID, t.orderID, t.productID, t.transactionDate, p.productName, p.productPrice
-                FROM TransactionTable t
-                INNER JOIN OrderTable o ON t.orderID = o.orderID
-                INNER JOIN productTable p ON t.productID = p.prodcutID
-                WHERE o.userID = @UserId
-            ";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                using (SqlConnection con = new SqlConnection(TransactionTable.con_string))
                 {
-                    transactions.Add(new TransactionModel
+                    string sql = @" SELECT t.* FROM transactionTable t
+                                    JOIN orderTable o ON t.orderID = o.orderID
+                                    WHERE o.userID = @UserID";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    con.Open();
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
                     {
-                        TransactionID = Convert.ToInt32(reader["transactionID"]),
-                        OrderID = Convert.ToInt32(reader["orderID"]),
-                        ProductID = Convert.ToInt32(reader["productID"]),
-                        TransactionDate = Convert.ToDateTime(reader["transactionDate"]),
-                        ProductName = reader["productName"].ToString(),
-                        ProductPrice = Convert.ToDecimal(reader["productPrice"])
-                    });
+                        TransactionModel transaction = new TransactionModel();
+                        transaction.TransactionID = dr["transactionID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["transactionID"]);
+                        transaction.OrderID = dr["orderID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["orderID"]);
+                        transaction.ProductID = dr["productID"] == DBNull.Value ? 0 : Convert.ToInt32(dr["productID"]);
+                        transaction.TransactionQuantity = dr["transactionQuantity"] == DBNull.Value ? 0 : Convert.ToInt32(dr["transactionQuantity"]);
+                        transaction.TransactionDate = dr["transactionDate"] == DBNull.Value ? DateTime.MinValue : Convert.ToDateTime(dr["transactionDate"]);
+                        transaction.TransactionStatus = dr["transactionStatus"] == DBNull.Value ? string.Empty : dr["transactionStatus"].ToString();
+                        transactions.Add(transaction);
+                    }
                 }
-                con.Close();
+                return transactions;
             }
-            return transactions;
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw ex;
+            }
         }
     }
 }

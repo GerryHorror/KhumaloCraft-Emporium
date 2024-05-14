@@ -1,14 +1,16 @@
 ﻿using CLDVWebAppST10046280.Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
+using System.Data.SqlClient;
 
 namespace CLDVWebAppST10046280.Controllers
 {
     public class TransactionController : Controller
     {
-        public IActionResult Transactions(int userId)
+        public IActionResult Transactions()
         {
-            var transactionModel = new TransactionModel();
-            var transactions = transactionModel.GetTransactionsByUserId(userId);
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId);
             return View(transactions);
         }
     }

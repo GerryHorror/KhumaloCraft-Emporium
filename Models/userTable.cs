@@ -18,6 +18,8 @@ namespace CLDVWebApp.Models
 
         public string Password { get; set; }
 
+        public bool IsAdmin { get; set; }
+
         public int insert_User(userTable m)
         {
             try

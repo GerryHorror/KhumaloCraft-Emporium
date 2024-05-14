@@ -1,9 +1,9 @@
 using CLDVWebApp.Models;
 using CLDVWebAppST10046280.Models;
-using CLDVWebAppST10046280.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
+using CLDVWebApp.Controllers;
+using CLDVWebAppST10046280.Controllers;
 
 namespace CLDVWebApp.Controllers
 {
@@ -56,9 +56,15 @@ namespace CLDVWebApp.Controllers
         // This is a test method to check if the WorkTest view is working
         public IActionResult WorkTest()
         {
-            return View();
+            var viewModel = new ProductViewModel
+            {
+                Products = new ProductDisplayModel().GetProducts(),
+                ProductForm = new productTable()
+            };
+            return View(viewModel);
         }
 
+        /*
         public IActionResult Product()
         {
             // Created a new instance of the ProductDisplayModel class and called the GetProducts method to get the products
@@ -66,6 +72,7 @@ namespace CLDVWebApp.Controllers
             // Returned the products to the Product view to display the products
             return View("Product", products);
         }
+        */
 
         // A test method to check if the user details are stored in the session
         public IActionResult UserDetails()
@@ -90,6 +97,13 @@ namespace CLDVWebApp.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
+        }
+
+        public IActionResult Transactions()
+        {
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId);
+            return View(transactions);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
