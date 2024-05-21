@@ -7,7 +7,8 @@ namespace CLDVWebAppST10046280.Controllers
 {
     public class LoginController : Controller
     {
-        public ActionResult Login(string email, string password)
+        [HttpPost]
+        public IActionResult Login(string email, string password)
         {
             var loginModel = new LoginModel();
             int userID = loginModel.SelectUser(email, password);
@@ -20,12 +21,14 @@ namespace CLDVWebAppST10046280.Controllers
                 HttpContext.Session.SetString("UserName", userDetails.Name);
                 HttpContext.Session.SetString("UserSurname", userDetails.Surname);
                 HttpContext.Session.SetString("UserEmail", userDetails.Email);
-                HttpContext.Session.SetInt32("IsAdmin", userDetails.IsAdmin ? 1 : 0);
+                HttpContext.Session.SetInt32("IsAdmin", userDetails.IsAdmin ? 1 : 0); // Automatically sets isAdmin to false
+                // Redirect to the LoginSuccess action method
                 return View("~/Views/Home/LoginSuccess.cshtml", userDetails);
             }
             else
             {
-                return View("LoginFailed");
+                ModelState.AddModelError(string.Empty, "Invalid login. Please try again.");
+                return View("~/Views/Home/Login.cshtml");
             }
         }
 

@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Transactions";
-    // Calculate total amount by summing up the product of TransactionQuantity and ProductPrice for each transaction
     decimal totalAmount = Model.Sum(transaction => transaction.TransactionQuantity * transaction.ProductPrice);
 }
 
 <style>
     .transactions-view {
         margin-top: 8rem;
+        margin-bottom: 8rem;
     }
 
     .user-info {

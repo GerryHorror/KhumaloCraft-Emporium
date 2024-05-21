@@ -36,67 +36,66 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 //<-------------------------------------------------------------------------------------->
-// Work Page script to add functionality to the add to cart buttons and the floating cart
-// Code based off: https://phppot.com/javascript/javascript-shopping-cart/#:~:text=How%20to%20build%20a%20JavaScript%20shopping%20cart%20using,Empty%20the%20cart%20by%20unsetting%20the%20sessionStorage%20instance.
-document.addEventListener('DOMContentLoaded', () => {
-    // Selecting the 'Add to Cart' buttons
-    const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-    const cartItemsList = document.querySelector('.cart-items');
-    const cartTotalAmount = document.getElementById('cart-total-amount');
-    const cartItemCount = document.getElementById('cart-item-count');
-    const cartOverlay = document.getElementById('cart-overlay');
-    const closeCartBtn = document.querySelector('.close-cart');
-    const floatingCart = document.getElementById('floating-cart');
+//document.addEventListener("DOMContentLoaded", function () {
+//    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Cart array to store the items
-    let cart = [];
+//    updateCartUI();
 
-    // Function to add an item to the cart array
-    function addToCart(name, price) {
-        const existingItem = cart.find(item => item.name === name);
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({ name, price, quantity: 1 });
-        }
-        updateCart();
-    }
-    // Function to update the cart display in the floating cart
-    function updateCart() {
-        cartItemsList.innerHTML = '';
-        let totalAmount = 0;
-        let itemCount = 0;
-        cart.forEach(item => {
-            const li = document.createElement('li');
-            li.classList.add('cart-item');
-            li.innerHTML = `<span>${item.name} x ${item.quantity}</span><span>R${(item.price * item.quantity).toFixed(2)}</span>`;
-            cartItemsList.appendChild(li);
-            totalAmount += item.price * item.quantity;
-            itemCount += item.quantity;
-        });
-        cartTotalAmount.textContent = totalAmount.toFixed(2);
-        cartItemCount.textContent = itemCount;
-    }
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
-            addToCart(name, price);
-        });
-    });
-    floatingCart.addEventListener('click', () => {
-        cartOverlay.style.display = 'flex';
-    });
-    closeCartBtn.addEventListener('click', () => {
-        cartOverlay.style.display = 'none';
-    });
-    // Simulate a purchase by emptying the cart and displaying a thank you message using a simple alert
-    const buyNowButton = document.querySelector('.btn-buy-now');
-    buyNowButton.addEventListener('click', () => {
-        alert('Thank you for your purchase!');
-        cart = [];
-        updateCart();
-        cartOverlay.style.display = 'none';
-    });
-});
+//    window.addToCart = function (productId, productName, productPrice, quantity) {
+//        let existingItem = cart.find(item => item.productId === productId);
+//        if (existingItem) {
+//            existingItem.quantity += quantity;
+//        } else {
+//            cart.push({ productId, productName, productPrice, quantity });
+//        }
+//        localStorage.setItem("cart", JSON.stringify(cart));
+//        updateCartUI();
+//    };
+
+//    function updateCartUI() {
+//        let cartItems = document.getElementById("cartItems");
+//        let cartTotal = document.getElementById("cartTotal");
+//        cartItems.innerHTML = "";
+//        let total = 0;
+//        cart.forEach(item => {
+//            total += item.productPrice * item.quantity;
+//            let li = document.createElement("li");
+//            li.textContent = `${item.productName} - ${item.quantity} x ${item.productPrice.toFixed(2)}`;
+//            cartItems.appendChild(li);
+//        });
+//        cartTotal.textContent = total.toFixed(2);
+//        document.getElementById("floatingCart").style.display = cart.length > 0 ? "block" : "none";
+//    }
+
+//    window.checkout = function () {
+//        if (cart.length === 0) {
+//            alert("Your cart is empty!");
+//            return;
+//        }
+
+//        fetch('/Order/FinalizeOrder', {
+//            method: 'POST',
+//            headers: {
+//                'Content-Type': 'application/json'
+//            },
+//            body: JSON.stringify(cart)
+//        })
+//            .then(response => response.json())
+//            .then(data => {
+//                if (data.success) {
+//                    alert("Order placed successfully!");
+//                    cart = [];
+//                    localStorage.setItem("cart", JSON.stringify(cart));
+//                    updateCartUI();
+//                    window.location.href = "/Order/OrderConfirmation";
+//                } else {
+//                    alert("Error placing order: " + data.message);
+//                }
+//            })
+//            .catch(error => {
+//                console.error('Error:', error);
+//                alert("An error occurred while placing your order.");
+//            });
+//    };
+//});
 //<--------------------------------------END---------------------------------------------->

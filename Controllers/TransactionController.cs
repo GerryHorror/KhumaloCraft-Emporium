@@ -5,13 +5,16 @@ using System.Data.SqlClient;
 
 namespace CLDVWebAppST10046280.Controllers
 {
-    public class TransactionController : Controller
+    namespace CLDVWebAppST10046280.Controllers
     {
-        public IActionResult Transactions()
+        public class TransactionController : Controller
         {
-            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId);
-            return View(transactions);
+            public IActionResult Transactions()
+            {
+                int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+                var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId);
+                return View(transactions);
+            }
         }
     }
 }

@@ -29,9 +29,7 @@ namespace CLDVWebAppST10046280.Models
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception or handle it appropriately
-                    // For now, rethrow the exception
-                    throw ex;
+                    return -1;
                 }
             }
             return userId;

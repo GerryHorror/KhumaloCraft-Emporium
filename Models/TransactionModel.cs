@@ -49,9 +49,11 @@ namespace CLDVWebAppST10046280.Models
         public List<TransactionModel> GetTransactionsForUser(int userId)
         {
             List<TransactionModel> transactions = new List<TransactionModel>();
+            string connectionString = TransactionTable.con_string;
+
             try
             {
-                using (SqlConnection con = new SqlConnection(TransactionTable.con_string))
+                using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     string sql = @"SELECT t.transactionID, t.orderID, t.productID, t.transactionQuantity, t.transactionDate, t.transactionStatus,
                            p.productName, p.productPrice
@@ -59,33 +61,45 @@ namespace CLDVWebAppST10046280.Models
                            JOIN orderTable o ON t.orderID = o.orderID
                            JOIN productTable p ON t.productID = p.productID
                            WHERE o.userID = @UserID";
-                    SqlCommand cmd = new SqlCommand(sql, con);
-                    cmd.Parameters.AddWithValue("@UserID", userId);
-                    con.Open();
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    while (dr.Read())
+
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
-                        TransactionModel transaction = new TransactionModel
+                        cmd.Parameters.AddWithValue("@UserID", userId);
+                        con.Open();
+
+                        using (SqlDataReader dr = cmd.ExecuteReader())
                         {
-                            TransactionID = dr["transactionID"] != DBNull.Value ? Convert.ToInt32(dr["transactionID"]) : 0,
-                            OrderID = dr["orderID"] != DBNull.Value ? Convert.ToInt32(dr["orderID"]) : 0,
-                            ProductID = dr["productID"] != DBNull.Value ? Convert.ToInt32(dr["productID"]) : 0,
-                            ProductName = dr["productName"].ToString(),
-                            TransactionQuantity = dr["transactionQuantity"] != DBNull.Value ? Convert.ToInt32(dr["transactionQuantity"]) : 0,
-                            TransactionDate = dr["transactionDate"] != DBNull.Value ? Convert.ToDateTime(dr["transactionDate"]) : DateTime.MinValue,
-                            TransactionStatus = dr["transactionStatus"].ToString(),
-                            ProductPrice = dr["productPrice"] != DBNull.Value ? Convert.ToDecimal(dr["productPrice"]) : 0
-                        };
-                        transactions.Add(transaction);
+                            while (dr.Read())
+                            {
+                                TransactionModel transaction = new TransactionModel
+                                {
+                                    TransactionID = dr["transactionID"] != DBNull.Value ? Convert.ToInt32(dr["transactionID"]) : 0,
+                                    OrderID = dr["orderID"] != DBNull.Value ? Convert.ToInt32(dr["orderID"]) : 0,
+                                    ProductID = dr["productID"] != DBNull.Value ? Convert.ToInt32(dr["productID"]) : 0,
+                                    ProductName = dr["productName"].ToString(),
+                                    TransactionQuantity = dr["transactionQuantity"] != DBNull.Value ? Convert.ToInt32(dr["transactionQuantity"]) : 0,
+                                    TransactionDate = dr["transactionDate"] != DBNull.Value ? Convert.ToDateTime(dr["transactionDate"]) : DateTime.MinValue,
+                                    TransactionStatus = dr["transactionStatus"].ToString(),
+                                    ProductPrice = dr["productPrice"] != DBNull.Value ? Convert.ToDecimal(dr["productPrice"]) : 0
+                                };
+                                transactions.Add(transaction);
+                            }
+                        }
                     }
                 }
-                return transactions;
+            }
+            catch (SqlException sqlEx)
+            {
+                // Log SQL exceptions here
+                throw new ApplicationException("Database error occurred.", sqlEx);
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
-                throw ex;
+                // Log other types of exceptions here
+                throw new ApplicationException("An error occurred.", ex);
             }
+
+            return transactions;
         }
     }
 }

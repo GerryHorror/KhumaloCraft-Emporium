@@ -24,16 +24,17 @@ namespace CLDVWebApp.Models
         {
             try
             {
-                string sql = "INSERT INTO userTable (userName, userSurname, userEmail, userPassword) VALUES (@Name, @Surname, @Email, @Password)";
+                string sql = "INSERT INTO userTable (userName, userSurname, userEmail, userPassword) OUTPUT INSERTED.UserID VALUES (@Name, @Surname, @Email, @Password)";
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@Name", m.Name);
                 cmd.Parameters.AddWithValue("@Surname", m.Surname);
                 cmd.Parameters.AddWithValue("@Email", m.Email);
                 cmd.Parameters.AddWithValue("@Password", m.Password);
                 con.Open();
-                int rowsAffected = cmd.ExecuteNonQuery();
+                // Execute the command and return the new user ID to the calling method
+                int newUserId = (int)cmd.ExecuteScalar();
                 con.Close();
-                return rowsAffected;
+                return newUserId;
             }
             catch (Exception ex)
             {
