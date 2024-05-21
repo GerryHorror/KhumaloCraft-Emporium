@@ -46,10 +46,10 @@ namespace CLDVWebApp.Controllers
             return View();
         }
 
-        public IActionResult LoginSuccess(int userID)
+        public IActionResult LoginSuccess(int userId)
         {
             userTable userDetails = null;
-            ViewData["userID"] = userID;
+            ViewData["userID"] = userId;
             return View(userDetails);
         }
 
@@ -63,16 +63,6 @@ namespace CLDVWebApp.Controllers
             };
             return View(viewModel);
         }
-
-        /*
-        public IActionResult Product()
-        {
-            // Created a new instance of the ProductDisplayModel class and called the GetProducts method to get the products
-            var products = new ProductDisplayModel().GetProducts();
-            // Returned the products to the Product view to display the products
-            return View("Product", products);
-        }
-        */
 
         // A test method to check if the user details are stored in the session
         public IActionResult UserDetails()

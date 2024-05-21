@@ -32,9 +32,9 @@ namespace CLDVWebApp.Models
                 cmd.Parameters.AddWithValue("@Password", m.Password);
                 con.Open();
                 // Execute the command and return the new user ID to the calling method
-                int newUserId = (int)cmd.ExecuteScalar();
+                int userId = (int)cmd.ExecuteScalar();
                 con.Close();
-                return newUserId;
+                return userId;
             }
             catch (Exception ex)
             {

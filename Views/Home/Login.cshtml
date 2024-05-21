@@ -61,6 +61,7 @@
 <body>
     <form id="loginForm" asp-controller="Login" asp-action="Login" method="post">
         <p>Login</p>
+        <!-- Error message if the details are incorrect/not in the database -->
         @Html.ValidationSummary(true, "", new { @class = "error-message" })
         <input type="text" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>

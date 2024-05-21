@@ -10,15 +10,16 @@ namespace CLDVWebApp.Controllers
         [HttpPost]
         public ActionResult SignUp(userTable Users)
         {
-            int newUserId = usrtbl.insert_User(Users);
+            int userId = usrtbl.insert_User(Users);
             // If the user is successfully added to the database, set the session variables (i.e. log the user in)
-            if (newUserId > 0)
+            if (userId > 0)
             {
                 // Set session variables for the user
-                HttpContext.Session.SetInt32("UserID", newUserId);
+                HttpContext.Session.SetInt32("UserID", userId);
                 HttpContext.Session.SetString("UserName", Users.Name);
                 HttpContext.Session.SetString("UserSurname", Users.Surname);
                 HttpContext.Session.SetString("UserEmail", Users.Email);
+                HttpContext.Session.SetInt32("IsAdmin", Users.IsAdmin ? 1 : 0);
             }
             // Redirect to the home page
             return RedirectToAction("Index", "Home");
