@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CLDVWebAppST10046280.Models;
 using System.Data.SqlClient;
-using System.Dynamic;
+using System.Collections.Generic;
 
 namespace CLDVWebAppST10046280.Controllers
 {
@@ -9,11 +9,40 @@ namespace CLDVWebAppST10046280.Controllers
     {
         public static string con_string = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
 
-        public IActionResult Transactions()
+        public IActionResult Orders()
         {
-            int loggedInUserId = HttpContext.Session.GetInt32("UserID") ?? 0;
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
             var orders = GetOrders(loggedInUserId);
             return View(orders);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateOrderStatus(int orderId, string status)
+        {
+            using (SqlConnection con = new SqlConnection(con_string))
+            {
+                string query = "UPDATE orderTable SET orderStatus = @status WHERE orderID = @orderId";
+                SqlCommand command = new SqlCommand(query, con);
+                command.Parameters.AddWithValue("@status", status);
+                command.Parameters.AddWithValue("@orderId", orderId);
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+            return RedirectToAction("Orders", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult RemoveOrder(int orderId)
+        {
+            using (SqlConnection con = new SqlConnection(con_string))
+            {
+                string query = "DELETE FROM orderTable WHERE orderID = @orderId";
+                SqlCommand command = new SqlCommand(query, con);
+                command.Parameters.AddWithValue("@orderId", orderId);
+                con.Open();
+                command.ExecuteNonQuery();
+            }
+            return RedirectToAction("Orders", "Home");
         }
 
         // GET: Get or create order
@@ -55,7 +84,7 @@ namespace CLDVWebAppST10046280.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddToOrder(int productId)
+        public IActionResult AddToOrder(int productId, int quantity)
         {
             int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
             if (loggedInUserId == 0)
@@ -64,35 +93,33 @@ namespace CLDVWebAppST10046280.Controllers
             }
 
             int orderId = GetOrCreateOrder(loggedInUserId);
-            CreateTransaction(orderId, productId);
+            CreateTransaction(orderId, productId, quantity);
+            UpdateOrderTotal(orderId);
             return RedirectToAction("Transactions", "Home");
         }
 
-        private List<OrderModel> GetOrders(int userId)
+        public List<OrderModel> GetOrders(int userId)
         {
             List<OrderModel> orders = new List<OrderModel>();
             using (SqlConnection con = new SqlConnection(con_string))
             {
                 string query = "SELECT * FROM orderTable WHERE userID = @userId";
-
-                using (SqlCommand command = new SqlCommand(query))
+                SqlCommand command = new SqlCommand(query, con);
+                command.Parameters.AddWithValue("@userId", userId);
+                con.Open();
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    command.Parameters.AddWithValue("@userId", userId);
-                    con.Open();
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        OrderModel order = new OrderModel
                         {
-                            OrderModel order = new OrderModel
-                            {
-                                OrderID = reader.GetInt32(reader.GetOrdinal("orderID")),
-                                UserID = reader.GetInt32(reader.GetOrdinal("userID")),
-                                OrderStatus = reader.GetString(reader.GetOrdinal("orderStatus")),
-                                OrderTotal = reader.GetDecimal(reader.GetOrdinal("orderTotal"))
-                            };
+                            OrderID = reader.GetInt32(reader.GetOrdinal("orderID")),
+                            UserID = reader.GetInt32(reader.GetOrdinal("userID")),
+                            OrderStatus = reader.GetString(reader.GetOrdinal("orderStatus")),
+                            OrderTotal = reader.GetDecimal(reader.GetOrdinal("orderTotal"))
+                        };
 
-                            orders.Add(order);
-                        }
+                        orders.Add(order);
                     }
                 }
             }
@@ -100,30 +127,40 @@ namespace CLDVWebAppST10046280.Controllers
         }
 
         // Helper method to create a transaction
-        private void CreateTransaction(int orderId, int productId)
+        private void CreateTransaction(int orderId, int productId, int quantity)
         {
             using (SqlConnection con = new SqlConnection(con_string))
             {
-                string query = "INSERT INTO transactionTable (orderID, productID, transactionQuantity, transactionDate, transactionStatus) VALUES (@orderId, @productId, 1, GETDATE(), 'Pending')";
+                string query = "INSERT INTO transactionTable (orderID, productID, transactionQuantity, transactionDate, transactionStatus) VALUES (@orderId, @productId, @quantity, GETDATE(), 'Pending')";
                 SqlCommand command = new SqlCommand(query, con);
                 command.Parameters.AddWithValue("@orderId", orderId);
                 command.Parameters.AddWithValue("@productId", productId);
+                command.Parameters.AddWithValue("@quantity", quantity);
                 con.Open();
                 command.ExecuteNonQuery();
             }
         }
 
-        // POST: Finalize Order
-        public IActionResult FinalizeOrder(int orderId)
+        // Helper method to update order total
+        private void UpdateOrderTotal(int orderId)
         {
-            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            if (loggedInUserId == 0)
+            using (SqlConnection con = new SqlConnection(con_string))
             {
-                return RedirectToAction("Login", "Login");
-            }
+                string query = @"
+                UPDATE orderTable
+                SET orderTotal = (
+                    SELECT SUM(p.productPrice * t.transactionQuantity)
+                    FROM transactionTable t
+                    JOIN productTable p ON t.productID = p.productID
+                    WHERE t.orderID = @orderId
+                )
+                WHERE orderID = @orderId";
 
-            FinalizeOrderStatus(orderId); // Change order status to 'Complete'
-            return RedirectToAction("OrderConfirmation", "Home");
+                SqlCommand command = new SqlCommand(query, con);
+                command.Parameters.AddWithValue("@orderId", orderId);
+                con.Open();
+                command.ExecuteNonQuery();
+            }
         }
 
         // Helper method to finalize order status

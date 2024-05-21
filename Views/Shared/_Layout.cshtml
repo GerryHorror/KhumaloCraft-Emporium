@@ -25,7 +25,7 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Work">My Work</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WorkTest">My Work (Test)</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
@@ -36,17 +36,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WorkTest">My Work (Test)</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Product">Product Listing</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Transactions">Transactions</a>
-                        </li>
-                        @if (Context.Session.GetInt32("UserId") != null)
+                        @if (Context.Session.GetInt32("UserId") != null) // This only shows if the user is logged in
                         {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Orders">Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Transactions">Transactions</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="UserDetails">User Details</a>
                             </li>

@@ -62,7 +62,6 @@
         }
 </style>
 <body>
-    <!--TODO: This should only be available for admin roles-->
     @if (isAdmin)
     {
         <h1>Update Product Database</h1>
@@ -79,7 +78,7 @@
             <button type="submit">Submit</button>
         </form>
     }
-    <!-- List of all the products currently in the database-->
+
     @if (Model.Products.Count > 0)
     {
         <h1 class="product-title">Product Listing</h1>

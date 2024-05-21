@@ -85,8 +85,15 @@ namespace CLDVWebApp.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Login", "Home");
             }
+        }
+
+        public IActionResult Orders()
+        {
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var orders = new OrderController().GetOrders(loggedInUserId);
+            return View(orders);
         }
 
         public IActionResult Transactions()
