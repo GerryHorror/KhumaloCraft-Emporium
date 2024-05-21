@@ -92,7 +92,7 @@ namespace CLDVWebApp.Controllers
         public IActionResult Orders()
         {
             int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var orders = new OrderController().GetOrders(loggedInUserId);
+            var orders = new OrderController().GetOrdersWithItems(loggedInUserId);
             return View(orders);
         }
 
