@@ -75,12 +75,12 @@
         <button type="submit">Submit</button>
     </form>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var form = document.querySelector("form"); 
+        document.addEventListener("DOMContentLoaded", function () {
+            var form = document.querySelector("form");
             var password = document.getElementById("password");
             var confirmPassword = document.getElementById("confirm-password");
 
-            form.addEventListener("submit", function(event) {
+            form.addEventListener("submit", function (event) {
                 if (password.value !== confirmPassword.value) {
                     event.preventDefault();
                     document.getElementById("password-error").style.display = "inline";
