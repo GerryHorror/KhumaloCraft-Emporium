@@ -149,7 +149,24 @@ namespace CLDVWebAppST10046280.Controllers
                     return RedirectToAction("Orders", "Home");
                 }
 
-                query = "DELETE FROM transactionTable WHERE orderID = @orderId AND productID = @productId";
+                // Check the quantity of the product in the order
+                query = "SELECT transactionQuantity FROM transactionTable WHERE orderID = @orderId AND productID = @productId";
+                command = new SqlCommand(query, con);
+                command.Parameters.AddWithValue("@orderId", orderId);
+                command.Parameters.AddWithValue("@productId", productId);
+                int quantity = (int)command.ExecuteScalar();
+
+                if (quantity > 1)
+                {
+                    // If quantity is more than 1, decrease it by 1
+                    query = "UPDATE transactionTable SET transactionQuantity = transactionQuantity - 1 WHERE orderID = @orderId AND productID = @productId";
+                }
+                else
+                {
+                    // If quantity is 1, delete the transaction
+                    query = "DELETE FROM transactionTable WHERE orderID = @orderId AND productID = @productId";
+                }
+
                 command = new SqlCommand(query, con);
                 command.Parameters.AddWithValue("@orderId", orderId);
                 command.Parameters.AddWithValue("@productId", productId);
@@ -160,6 +177,7 @@ namespace CLDVWebAppST10046280.Controllers
             }
             return RedirectToAction("Orders", "Home");
         }
+
 
         private void UpdateOrderTotal(int orderId)
         {
@@ -200,7 +218,8 @@ namespace CLDVWebAppST10046280.Controllers
                             OrderID = reader.GetInt32(reader.GetOrdinal("orderID")),
                             UserID = reader.GetInt32(reader.GetOrdinal("userID")),
                             OrderStatus = reader.GetString(reader.GetOrdinal("orderStatus")),
-                            OrderTotal = reader.GetDecimal(reader.GetOrdinal("orderTotal"))
+                            // Add null check for OrderTotal
+                            OrderTotal = !reader.IsDBNull(reader.GetOrdinal("orderTotal")) ? reader.GetDecimal(reader.GetOrdinal("orderTotal")) : 0
                         };
                         order.Items = GetOrderItems(order.OrderID);
                         orders.Add(order);
