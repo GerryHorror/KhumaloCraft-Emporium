@@ -4,7 +4,7 @@ namespace CLDVWebApp.Models
 {
     public class userTable
     {
-        public static string con_string = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+        public static string con_string = "Server=tcp:sql-cldv-st10046280-server.database.windows.net,1433;Initial Catalog=sql-cldv-st10046280-database;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public static SqlConnection con = new SqlConnection(con_string);
 
@@ -24,12 +24,13 @@ namespace CLDVWebApp.Models
         {
             try
             {
-                string sql = "INSERT INTO userTable (userName, userSurname, userEmail, userPassword) OUTPUT INSERTED.UserID VALUES (@Name, @Surname, @Email, @Password)";
+                string sql = "INSERT INTO userTable (userName, userSurname, userEmail, userPassword, isAdmin) OUTPUT INSERTED.UserID VALUES (@Name, @Surname, @Email, @Password, @Admin)";
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@Name", m.Name);
                 cmd.Parameters.AddWithValue("@Surname", m.Surname);
                 cmd.Parameters.AddWithValue("@Email", m.Email);
                 cmd.Parameters.AddWithValue("@Password", m.Password);
+                cmd.Parameters.AddWithValue("@Admin", m.IsAdmin ? 1 : 0);
                 con.Open();
                 // Execute the command and return the new user ID to the calling method
                 int userId = (int)cmd.ExecuteScalar();

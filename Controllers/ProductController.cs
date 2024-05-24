@@ -12,7 +12,7 @@ namespace CLDVWebAppST10046280.Controllers
         public ActionResult WorkTest(productTable Products)
         {
             var result = prdtbl.insert_Product(Products);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("WorkTest", "Home");
         }
 
         [HttpGet]

@@ -7,7 +7,7 @@ namespace CLDVWebAppST10046280.Controllers
 {
     public class OrderController : Controller
     {
-        public static string con_string = "Server=tcp:gerard-clouddev-server.database.windows.net,1433;Initial Catalog=gerard-clouddev-db;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30";
+        public static string con_string = "Server=tcp:sql-cldv-st10046280-server.database.windows.net,1433;Initial Catalog=sql-cldv-st10046280-database;Persist Security Info=False;User ID=Gerard;Password=vuhpis-sEbpat-zezho2;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public IActionResult Orders()
         {
@@ -36,13 +36,35 @@ namespace CLDVWebAppST10046280.Controllers
         {
             using (SqlConnection con = new SqlConnection(con_string))
             {
-                string query = "INSERT INTO transactionTable (orderID, productID, transactionQuantity, transactionDate, transactionStatus) VALUES (@orderId, @productId, @quantity, GETDATE(), 'Pending')";
-                SqlCommand command = new SqlCommand(query, con);
-                command.Parameters.AddWithValue("@orderId", orderId);
-                command.Parameters.AddWithValue("@productId", productId);
-                command.Parameters.AddWithValue("@quantity", quantity);
                 con.Open();
-                command.ExecuteNonQuery();
+
+                // Check if a transaction for the same product already exists
+                string checkQuery = "SELECT transactionQuantity FROM transactionTable WHERE orderID = @orderId AND productID = @productId";
+                SqlCommand checkCommand = new SqlCommand(checkQuery, con);
+                checkCommand.Parameters.AddWithValue("@orderId", orderId);
+                checkCommand.Parameters.AddWithValue("@productId", productId);
+                object result = checkCommand.ExecuteScalar();
+
+                if (result != null)
+                {
+                    // If a transaction exists, update the quantity
+                    string updateQuery = "UPDATE transactionTable SET transactionQuantity = transactionQuantity + @quantity WHERE orderID = @orderId AND productID = @productId";
+                    SqlCommand updateCommand = new SqlCommand(updateQuery, con);
+                    updateCommand.Parameters.AddWithValue("@orderId", orderId);
+                    updateCommand.Parameters.AddWithValue("@productId", productId);
+                    updateCommand.Parameters.AddWithValue("@quantity", quantity);
+                    updateCommand.ExecuteNonQuery();
+                }
+                else
+                {
+                    // If no transaction exists, create a new one
+                    string insertQuery = "INSERT INTO transactionTable (orderID, productID, transactionQuantity, transactionDate, transactionStatus) VALUES (@orderId, @productId, @quantity, GETDATE(), 'Pending')";
+                    SqlCommand insertCommand = new SqlCommand(insertQuery, con);
+                    insertCommand.Parameters.AddWithValue("@orderId", orderId);
+                    insertCommand.Parameters.AddWithValue("@productId", productId);
+                    insertCommand.Parameters.AddWithValue("@quantity", quantity);
+                    insertCommand.ExecuteNonQuery();
+                }
             }
         }
 
@@ -196,7 +218,7 @@ namespace CLDVWebAppST10046280.Controllers
                 try
                 {
                     string query = @"
-                    SELECT t.transactionID, t.orderID, t.productID, t.transactionQuantity, t.transactionDate, t.transactionStatus, 
+                    SELECT t.transactionID, t.orderID, t.productID, t.transactionQuantity, t.transactionDate, t.transactionStatus,
                     p.productName, p.productPrice
                     FROM transactionTable t
                     JOIN productTable p ON t.productID = p.productID
@@ -232,6 +254,5 @@ namespace CLDVWebAppST10046280.Controllers
             }
             return items;
         }
-
     }
 }
