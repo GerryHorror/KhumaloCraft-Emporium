@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\home.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\work.css" />
   </ItemGroup>
 
   <ItemGroup>
