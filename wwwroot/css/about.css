@@ -3,6 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
+    background-color: var(--kc-main-bg);
 }
 
 .content {
@@ -23,7 +25,8 @@
 
 .artist {
     position: relative;
-    width: 371px;
+    width: 100%;
+    max-width: 371px;
     height: 247px;
     opacity: 0;
 }
@@ -45,6 +48,10 @@
     transition: transform 0.5s ease-in-out;
 }
 
+.artist:hover img {
+    transform: scale(1.1);
+}
+
 .overlay {
     position: absolute;
     top: 0;
@@ -60,6 +67,7 @@
     text-align: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    border-radius: 10px;
 }
 
 .artist:hover .overlay {
@@ -86,7 +94,23 @@
     margin-top: 4rem;
     opacity: 0;
     animation: slideInUp 1s ease-in-out forwards;
+    background-color: var(--kc-secondary-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
+
+    .about-description h1 {
+        margin-bottom: 20px;
+        font-size: 2.5rem;
+        color: var(--kc-main-text);
+    }
+
+    .about-description p {
+        font-size: 1.2rem;
+        color: var(--kc-secondary-text);
+        line-height: 1.6;
+    }
 
 @keyframes slideInLeft {
     0% {
@@ -121,5 +145,28 @@
     100% {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .about-description {
+        grid-column: 1;
+    }
+
+    .artist {
+        width: 100%;
+        height: auto;
+    }
+
+    .about-description h1 {
+        font-size: 2rem;
+    }
+
+    .about-description p {
+        font-size: 1rem;
     }
 }
