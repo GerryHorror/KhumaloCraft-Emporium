@@ -1,4 +1,5 @@
 /* Site-wide CSS */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 :root {
     --kc-main-bg: #F5F1E6; /* Main background color */
     --kc-secondary-bg: #EDE6DB; /* Secondary background color */
@@ -18,7 +19,7 @@
 html, body {
     height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: var(--kc-main-bg);
     color: var(--kc-main-text);
 }

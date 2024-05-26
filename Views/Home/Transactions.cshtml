@@ -3,19 +3,24 @@
 @{
     ViewData["Title"] = "Transactions";
     decimal totalAmount = Model.Sum(transaction => transaction.TransactionQuantity * transaction.ProductPrice);
+    bool isAdmin = Context.Session.GetInt32("IsAdmin") == 1;
 }
 
 <style>
-    .transactions-view {
+    .transactions-container {
         margin-top: 8rem;
         margin-bottom: 8rem;
+        padding: 20px;
+        background-color: var(--kc-main-bg);
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .user-info {
         background-color: var(--kc-secondary-bg);
         padding: 1rem;
         border-radius: 10px;
-        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
     }
 
@@ -27,6 +32,7 @@
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 2rem;
     }
 
     th {
@@ -35,9 +41,8 @@
         font-weight: bold;
     }
 
-    th,
-    td {
-        padding: 0.5rem;
+    th, td {
+        padding: 0.75rem;
         text-align: left;
         border-bottom: 1px solid var(--kc-secondary-bg);
     }
@@ -49,9 +54,13 @@
     tr:hover {
         background-color: var(--kc-highlight-color);
     }
+
+    .total-row td {
+        font-weight: bold;
+    }
 </style>
 
-<div class="transactions-view">
+<div class="transactions-container">
     <h2>Transactions</h2>
 
     @if (Context.Session.GetInt32("UserId") != null)
@@ -89,11 +98,29 @@
                         <td>@transaction.TransactionQuantity</td>
                         <td>@transaction.ProductPrice.ToString("C")</td>
                         <td>@transaction.TransactionDate.ToString("dd-MM-yyyy")</td>
-                        <td>@transaction.TransactionStatus</td>
+                        <td>
+                            @if (isAdmin)
+                            {
+                                <form asp-controller="Transaction" asp-action="UpdateTransactionStatus" method="post" onsubmit="event.preventDefault(); submitForm(this);">
+                                    <select name="status" class="status-dropdown">
+                                        <option value="Pending" selected="@(transaction.TransactionStatus == "Pending")">Pending</option>
+                                        <option value="Unpaid" selected="@(transaction.TransactionStatus == "Unpaid")">Unpaid</option>
+                                        <option value="Paid" selected="@(transaction.TransactionStatus == "Paid")">Paid</option>
+                                    </select>
+                                    <input type="hidden" name="transactionId" value="@transaction.TransactionID" />
+                                    <button type="submit" class="update-status-button">Update Status</button>
+                                </form>
+                            }
+                            else
+                            {
+                                @Html.Raw(transaction.TransactionStatus)
+                            }
+                        </td>
                     </tr>
                 }
-                <tr>
-                    <td colspan="5" style="text-align: right; font-weight: bold;">Total Amount:</td>
+
+                <tr class="total-row">
+                    <td colspan="5" style="text-align: right;">Total Amount:</td>
                     <td>@totalAmount.ToString("C")</td>
                     <td colspan="2"></td>
                 </tr>

@@ -46,7 +46,7 @@ namespace CLDVWebAppST10046280.Models
             }
         }
 
-        public List<TransactionModel> GetTransactionsForUser(int userId)
+        public List<TransactionModel> GetTransactionsForUser(int userId, bool isAdmin)
         {
             List<TransactionModel> transactions = new List<TransactionModel>();
             string connectionString = TransactionTable.con_string;
@@ -56,15 +56,22 @@ namespace CLDVWebAppST10046280.Models
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     string sql = @"SELECT t.transactionID, t.orderID, t.productID, t.transactionQuantity, t.transactionDate, t.transactionStatus,
-                           p.productName, p.productPrice
-                           FROM transactionTable t
-                           JOIN orderTable o ON t.orderID = o.orderID
-                           JOIN productTable p ON t.productID = p.productID
-                           WHERE o.userID = @UserID";
+                       p.productName, p.productPrice
+                       FROM transactionTable t
+                       JOIN orderTable o ON t.orderID = o.orderID
+                       JOIN productTable p ON t.productID = p.productID";
+
+                    if (!isAdmin)
+                    {
+                        sql += " WHERE o.userID = @UserID";
+                    }
 
                     using (SqlCommand cmd = new SqlCommand(sql, con))
                     {
-                        cmd.Parameters.AddWithValue("@UserID", userId);
+                        if (!isAdmin)
+                        {
+                            cmd.Parameters.AddWithValue("@UserID", userId);
+                        }
                         con.Open();
 
                         using (SqlDataReader dr = cmd.ExecuteReader())
@@ -100,6 +107,28 @@ namespace CLDVWebAppST10046280.Models
             }
 
             return transactions;
+        }
+
+        public void UpdateTransactionStatus(int transactionId, string status)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(con_string))
+                {
+                    string sql = "UPDATE transactionTable SET transactionStatus = @TransactionStatus WHERE transactionID = @TransactionID";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@TransactionStatus", status);
+                    cmd.Parameters.AddWithValue("@TransactionID", transactionId);
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                throw ex;
+            }
         }
     }
 }

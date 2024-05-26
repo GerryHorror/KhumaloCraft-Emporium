@@ -94,7 +94,8 @@ namespace CLDVWebApp.Controllers
         public IActionResult Transactions()
         {
             int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
-            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId);
+            bool isAdmin = HttpContext.Session.GetInt32("IsAdmin") == 1;
+            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId, isAdmin);
             return View(transactions);
         }
 

@@ -62,4 +62,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+//<-------------------------------------------------------------------------------------->
+// Form Submission using AJAX for Transaction Page
+// Code based off: https://www.w3schools.com/howto/howto_js_form_steps.asp
+function submitForm(form) {
+    var formData = new FormData(form);
+    var request = new XMLHttpRequest();
+    request.open("POST", form.action);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            alert(request.responseText);
+            location.reload();
+        }
+    };
+    request.send(formData);
+}
 //<--------------------------------------END---------------------------------------------->
