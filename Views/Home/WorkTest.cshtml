@@ -1,108 +1,149 @@
 ﻿@model CLDVWebAppST10046280.Models.ProductViewModel
+
 @{
     ViewData["Title"] = "Our Work";
     bool isAdmin = Context.Session.GetInt32("IsAdmin") == 1;
 }
-<!--TODO: Move to site.css-->
+
 <style>
-    body {
-        font-family: Arial, sans-serif;
+    .work-container {
+        padding-top: 40px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
     }
 
-    h1 {
-        color: #333;
+    .update-db-title, .product-list-title {
+        color: var(--kc-main-text);
+        text-align: center;
+        margin: 40px 0;
+        font-size: 2.5em;
+        font-weight: 700;
     }
 
-    form {
+    .update-db-instructions, .no-products-found {
+        color: var(--kc-secondary-text);
+        font-size: 1.1em;
         margin-bottom: 20px;
+        text-align: center;
     }
 
-    input, select, button {
+    .product-db-form, .product-order-form {
+ 
+        max-width: 400px;
+        width: 100%;
+        padding: 20px;
+        background-color: var(--kc-secondary-bg);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .product-db-input, .product-db-select, .product-db-submit, .product-quantity, .add-to-order-btn {
         display: block;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         padding: 10px;
         width: 100%;
-        max-width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: var(--kc-secondary-bg);
+        color: var(--kc-main-text);
+        font-size: 1em;
     }
 
+    .product-db-submit, .add-to-order-btn {
+        background-color: var(--kc-button-bg);
+        color: var(--kc-button-text);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .product-db-submit:hover, .add-to-order-btn:hover {
+            background-color: var(--kc-highlight-color);
+        }
+
     .product-gallery {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        width: 100%;
+        padding: 0 20px;
     }
 
     .product-item {
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        margin-bottom: 20px;
+        background-color: var(--kc-secondary-bg);
+        border-radius: 8px;
         padding: 20px;
-        width: calc(33.3333% - 20px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .product-item-name {
-        margin: 0 0 10px;
-        font-size: 18px;
-    }
-
-    .btn {
-        background-color: #007bff;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-    }
-
-        .btn:disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
-</style>
-<body>
-    @if (isAdmin)
-    {
-        <h1>Update Product Database</h1>
-        <p>Please complete the form below to update the product database:</p>
-        <form asp-controller="Product" asp-action="WorkTest" method="post">
-            <input type="text" name="Name" placeholder="Name" required>
-            <input type="number" step="0.01" name="Price" placeholder="Price" required />
-            <input type="text" name="Category" placeholder="Category" required />
-            <label for="Available">Availability:</label>
-            <select id="Available" name="Available">
-                <option value="true">In Stock</option>
-                <option value="false">Out of Stock</option>
-            </select>
-            <button type="submit">Submit</button>
-        </form>
+
+    .product-name {
+        margin: 0 0 10px;
+        font-size: 1.5em;
+        font-weight: 600;
     }
 
-    @if (Model.Products.Count > 0)
-    {
-        <h1 class="product-title">Product Listing</h1>
-        <div class="product-gallery">
-            @foreach (var product in Model.Products)
-            {
-                <div class="product-item">
-                    <h2 class="product-item-name">@product.ProductName</h2>
-                    <p>ID: @product.ProductID</p>
-                    <p>Price: @product.ProductPrice</p>
-                    <p>Category: @product.ProductCategory</p>
-                    <p>Availability: @product.Availability</p>
-                    <form asp-controller="Order" asp-action="AddToOrder" method="post">
-                        <input type="hidden" name="productId" value="@product.ProductID" />
-                        <input type="number" name="quantity" min="1" value="1" />
-                        <button type="submit" class="btn btn-primary" @(product.ProductAvailable ? "" : "disabled")>Add to Order</button>
-                    </form>
-                </div>
-            }
-        </div>
+    .product-id, .product-price, .product-category, .product-availability {
+        margin: 5px 0;
+        font-size: 1em;
     }
-    else
-    {
-        <p>No products found.</p>
+
+    .btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
     }
+</style>
+
+<body>
+    <div class="work-container">
+        @if (isAdmin)
+        {
+            <h1 class="update-db-title">Update Product Database</h1>
+            <p class="update-db-instructions">Please complete the form below to update the product database:</p>
+            <form class="product-db-form" asp-controller="Product" asp-action="WorkTest" method="post">
+                <input class="product-db-input" type="text" name="Name" placeholder="Name" required>
+                <input class="product-db-input" type="number" step="0.01" name="Price" placeholder="Price" required />
+                <input class="product-db-input" type="text" name="Category" placeholder="Category" required />
+                <label class="product-db-label" for="Available">Availability:</label>
+                <select class="product-db-select" id="Available" name="Available">
+                    <option value="true">In Stock</option>
+                    <option value="false">Out of Stock</option>
+                </select>
+                <button class="product-db-submit" type="submit">Submit</button>
+            </form>
+        }
+
+        @if (Model.Products.Count > 0)
+        {
+            <h1 class="product-list-title">Product Listing</h1>
+            <div class="product-gallery">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="product-item">
+                        <h2 class="product-name">@product.ProductName</h2>
+                        <p class="product-id">ID: @product.ProductID</p>
+                        <p class="product-price">Price: @product.ProductPrice</p>
+                        <p class="product-category">Category: @product.ProductCategory</p>
+                        <p class="product-availability">Availability: @product.Availability</p>
+                        <form class="product-order-form" asp-controller="Order" asp-action="AddToOrder" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductID" />
+                            <input class="product-quantity" type="number" name="quantity" min="1" value="1" />
+                            <button class="add-to-order-btn" type="submit" @(product.ProductAvailable ? "" : "disabled")>Add to Order</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="no-products-found">No products found.</p>
+        }
+    </div>
 </body>
