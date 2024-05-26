@@ -36,67 +36,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 //<-------------------------------------------------------------------------------------->
-// Work Page script to add functionality to the add to cart buttons and the floating cart
-// Code based off: https://phppot.com/javascript/javascript-shopping-cart/#:~:text=How%20to%20build%20a%20JavaScript%20shopping%20cart%20using,Empty%20the%20cart%20by%20unsetting%20the%20sessionStorage%20instance.
-document.addEventListener('DOMContentLoaded', () => {
-    // Selecting the 'Add to Cart' buttons
-    const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-    const cartItemsList = document.querySelector('.cart-items');
-    const cartTotalAmount = document.getElementById('cart-total-amount');
-    const cartItemCount = document.getElementById('cart-item-count');
-    const cartOverlay = document.getElementById('cart-overlay');
-    const closeCartBtn = document.querySelector('.close-cart');
-    const floatingCart = document.getElementById('floating-cart');
+// Password Confirmation Validation and Password Toggle for Signup Page
+// Code based off: https://www.w3schools.com/howto/howto_js_password_validation.asp
+document.addEventListener("DOMContentLoaded", function () {
+    var form = document.querySelector(".signup-form");
+    if (form) {
+        var password = document.getElementById("password");
+        var confirmPassword = document.getElementById("confirm-password");
+        var passwordToggle = document.getElementById("password-toggle");
 
-    // Cart array to store the items
-    let cart = [];
+        form.addEventListener("submit", function (event) {
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+                document.getElementById("password-error").style.display = "inline";
+                confirmPassword.focus();
+            } else {
+                document.getElementById("password-error").style.display = "none";
+            }
+        });
 
-    // Function to add an item to the cart array
-    function addToCart(name, price) {
-        const existingItem = cart.find(item => item.name === name);
-        if (existingItem) {
-            existingItem.quantity++;
-        } else {
-            cart.push({ name, price, quantity: 1 });
-        }
-        updateCart();
-    }
-    // Function to update the cart display in the floating cart
-    function updateCart() {
-        cartItemsList.innerHTML = '';
-        let totalAmount = 0;
-        let itemCount = 0;
-        cart.forEach(item => {
-            const li = document.createElement('li');
-            li.classList.add('cart-item');
-            li.innerHTML = `<span>${item.name} x ${item.quantity}</span><span>R${(item.price * item.quantity).toFixed(2)}</span>`;
-            cartItemsList.appendChild(li);
-            totalAmount += item.price * item.quantity;
-            itemCount += item.quantity;
+        passwordToggle.addEventListener("change", function () {
+            var type = this.checked ? "text" : "password";
+            password.type = type;
+            confirmPassword.type = type;
         });
-        cartTotalAmount.textContent = totalAmount.toFixed(2);
-        cartItemCount.textContent = itemCount;
     }
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
-            addToCart(name, price);
-        });
-    });
-    floatingCart.addEventListener('click', () => {
-        cartOverlay.style.display = 'flex';
-    });
-    closeCartBtn.addEventListener('click', () => {
-        cartOverlay.style.display = 'none';
-    });
-    // Simulate a purchase by emptying the cart and displaying a thank you message using a simple alert
-    const buyNowButton = document.querySelector('.btn-buy-now');
-    buyNowButton.addEventListener('click', () => {
-        alert('Thank you for your purchase!');
-        cart = [];
-        updateCart();
-        cartOverlay.style.display = 'none';
-    });
 });
+//<-------------------------------------------------------------------------------------->
+// Form Submission using AJAX for Transaction Page
+// Code based off: https://www.w3schools.com/howto/howto_js_form_steps.asp
+function submitForm(form) {
+    var formData = new FormData(form);
+    var request = new XMLHttpRequest();
+    request.open("POST", form.action);
+    request.onreadystatechange = function () {
+        if (request.readyState === 4 && request.status === 200) {
+            alert(request.responseText);
+            location.reload();
+        }
+    };
+    request.send(formData);
+}
 //<--------------------------------------END---------------------------------------------->

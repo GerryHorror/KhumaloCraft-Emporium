@@ -1,8 +1,9 @@
 using CLDVWebApp.Models;
 using CLDVWebAppST10046280.Models;
-using CLDVWebAppST10046280.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using CLDVWebApp.Controllers;
+using CLDVWebAppST10046280.Controllers;
 
 namespace CLDVWebApp.Controllers
 {
@@ -16,11 +17,6 @@ namespace CLDVWebApp.Controllers
         }
 
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Work()
         {
             return View();
         }
@@ -45,25 +41,62 @@ namespace CLDVWebApp.Controllers
             return View();
         }
 
-        public IActionResult LoginSuccess(int userID)
+        public IActionResult LoginSuccess(int userId)
         {
             userTable userDetails = null;
-            ViewData["userID"] = userID;
+            ViewData["userID"] = userId;
             return View(userDetails);
         }
 
         // This is a test method to check if the WorkTest view is working
-        public IActionResult WorkTest()
+        public IActionResult Work()
         {
-            return View();
+            var viewModel = new ProductViewModel
+            {
+                Products = new ProductDisplayModel().GetProducts(),
+                ProductForm = new productTable()
+            };
+            return View(viewModel);
         }
 
-        public IActionResult Product()
+        // A test method to check if the user details are stored in the session
+        public IActionResult UserDetails()
         {
-            // Created a new instance of the ProductDisplayModel class and called the GetProducts method to get the products
-            var products = new ProductDisplayModel().GetProducts();
-            // Returned the products to the Product view to display the products
-            return View("Product", products);
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            string userName = HttpContext.Session.GetString("UserName");
+            string userSurname = HttpContext.Session.GetString("UserSurname");
+            string userEmail = HttpContext.Session.GetString("UserEmail");
+
+            if (userId != 0)
+            {
+                var userDetails = new userTable
+                {
+                    UserID = userId,
+                    Name = userName,
+                    Surname = userSurname,
+                    Email = userEmail
+                };
+                return View(userDetails);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public IActionResult Orders()
+        {
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            var orders = new OrderController().GetOrdersWithItems(loggedInUserId);
+            return View(orders);
+        }
+
+        public IActionResult Transactions()
+        {
+            int loggedInUserId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            bool isAdmin = HttpContext.Session.GetInt32("IsAdmin") == 1;
+            var transactions = new TransactionTable().GetTransactionsForUser(loggedInUserId, isAdmin);
+            return View(transactions);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

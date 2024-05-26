@@ -1,0 +1,81 @@
+﻿@model List<CLDVWebAppST10046280.Models.TransactionModel>
+
+@{
+    ViewData["Title"] = "Transactions";
+    decimal totalAmount = Model.Sum(transaction => transaction.TransactionQuantity * transaction.ProductPrice);
+    bool isAdmin = Context.Session.GetInt32("IsAdmin") == 1;
+}
+<link rel="stylesheet" href="~/css/transaction.css"/>
+
+<div class="transactions-container">
+    <h2>Transactions</h2>
+
+    @if (Context.Session.GetInt32("UserId") != null)
+    {
+        <div class="user-info">
+            <p>User ID: @Context.Session.GetInt32("UserId")</p>
+            <p>User Details: @Context.Session.GetString("UserName") @Context.Session.GetString("UserSurname")</p>
+            <p>User Email: @Context.Session.GetString("UserEmail")</p>
+        </div>
+    }
+
+    @if (Model != null && Model.Count > 0)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Order ID</th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Product Price</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in Model)
+                {
+                    <tr>
+                        <td>@transaction.TransactionID</td>
+                        <td>@transaction.OrderID</td>
+                        <td>@transaction.ProductID</td>
+                        <td>@transaction.ProductName</td>
+                        <td>@transaction.TransactionQuantity</td>
+                        <td>@transaction.ProductPrice.ToString("C")</td>
+                        <td>@transaction.TransactionDate.ToString("dd-MM-yyyy")</td>
+                        <td>
+                            @if (isAdmin)
+                            {
+                                <form asp-controller="Transaction" asp-action="UpdateTransactionStatus" method="post" onsubmit="event.preventDefault(); submitForm(this);">
+                                    <select name="status" class="status-dropdown">
+                                        <option value="Pending" selected="@(transaction.TransactionStatus == "Pending")">Pending</option>
+                                        <option value="Unpaid" selected="@(transaction.TransactionStatus == "Unpaid")">Unpaid</option>
+                                        <option value="Paid" selected="@(transaction.TransactionStatus == "Paid")">Paid</option>
+                                    </select>
+                                    <input type="hidden" name="transactionId" value="@transaction.TransactionID" />
+                                    <button type="submit" class="update-status-button">Update Status</button>
+                                </form>
+                            }
+                            else
+                            {
+                                @Html.Raw(transaction.TransactionStatus)
+                            }
+                        </td>
+                    </tr>
+                }
+
+                <tr class="total-row">
+                    <td colspan="5" style="text-align: right;">Total Amount:</td>
+                    <td>@totalAmount.ToString("C")</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No transactions found.</p>
+    }
+</div>

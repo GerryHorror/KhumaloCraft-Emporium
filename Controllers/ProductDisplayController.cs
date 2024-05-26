@@ -5,7 +5,7 @@ namespace CLDVWebAppST10046280.Controllers
 {
     public class ProductDisplayController : Controller
     {
-        public IActionResult Product()
+        public IActionResult WorkTest()
         {
             var products = new ProductDisplayModel().GetProducts();
             return View(products);

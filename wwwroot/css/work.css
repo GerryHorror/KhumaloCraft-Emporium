@@ -1,0 +1,93 @@
+﻿.work-container {
+    padding-top: 40px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.update-db-title, .product-list-title {
+    color: var(--kc-main-text);
+    text-align: center;
+    margin: 40px 0;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.update-db-instructions, .no-products-found {
+    color: var(--kc-secondary-text);
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.product-db-form, .product-order-form {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    background-color: var(--kc-secondary-bg);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.product-db-input, .product-db-select, .product-db-submit, .product-quantity, .add-to-order-btn {
+    display: block;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: var(--kc-secondary-bg);
+    color: var(--kc-main-text);
+    font-size: 1em;
+}
+
+.product-db-submit, .add-to-order-btn {
+    background-color: var(--kc-button-bg);
+    color: var(--kc-button-text);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .product-db-submit:hover, .add-to-order-btn:hover {
+        background-color: var(--kc-highlight-color);
+    }
+
+.product-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.product-item {
+    background-color: var(--kc-secondary-bg);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .product-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+.product-name {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    font-weight: 600;
+}
+
+.product-id, .product-price, .product-category, .product-availability {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.add-to-order-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
