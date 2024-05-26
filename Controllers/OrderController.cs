@@ -28,7 +28,7 @@ namespace CLDVWebAppST10046280.Controllers
             int orderId = GetOrCreateOrder(loggedInUserId);
             CreateTransaction(orderId, productId, quantity);
             UpdateOrderTotal(orderId);
-            return RedirectToAction("WorkTest", "Home");
+            return RedirectToAction("Work", "Home");
         }
 
         // Helper method to create a transaction
@@ -177,7 +177,6 @@ namespace CLDVWebAppST10046280.Controllers
             }
             return RedirectToAction("Orders", "Home");
         }
-
 
         private void UpdateOrderTotal(int orderId)
         {

@@ -1,87 +1,53 @@
-﻿@{
-    ViewData["Title"] = "My Work";
+﻿@model CLDVWebAppST10046280.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "Our Work";
+    bool isAdmin = Context.Session.GetInt32("IsAdmin") == 1;
 }
-<!--
-<div class="work-page">
-    <h1 class="work-title">Our Artisans' Work</h1>
-    <p class="work-intro">
-        Discover a curated collection of handcrafted wonders created by our skilled artisans from around the globe.
-        Each piece tells a unique story, embodying the spirit of its creator and the heritage of its origin.
-    </p>
-    <div class="work-gallery">
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-masks.jpg" alt="Wooden masks on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Wooden Masks" data-price="350.00">Add to Cart</button>
-                </div>
+<link rel="stylesheet" href="~/css/work.css" />
+<body>
+    <div class="work-container">
+        @if (isAdmin)
+        {
+            <h1 class="update-db-title">Update Product Database</h1>
+            <p class="update-db-instructions">Please complete the form below to update the product database:</p>
+            <form class="product-db-form" asp-controller="Product" asp-action="Work" method="post">
+                <input class="product-db-input" type="text" name="Name" placeholder="Name" required>
+                <input class="product-db-input" type="number" step="0.01" name="Price" placeholder="Price" required />
+                <input class="product-db-input" type="text" name="Category" placeholder="Category" required />
+                <label class="product-db-label" for="Available">Availability:</label>
+                <select class="product-db-select" id="Available" name="Available">
+                    <option value="true">In Stock</option>
+                    <option value="false">Out of Stock</option>
+                </select>
+                <button class="product-db-submit" type="submit">Submit</button>
+            </form>
+        }
+
+        @if (Model.Products.Count > 0)
+        {
+            <h1 class="product-list-title">Product Listing</h1>
+            <div class="product-gallery">
+                @foreach (var product in Model.Products)
+                {
+                    <div class="product-item">
+                        <h2 class="product-name">@product.ProductName</h2>
+                        <p class="product-id">ID: @product.ProductID</p>
+                        <p class="product-price">Price: @product.ProductPrice</p>
+                        <p class="product-category">Category: @product.ProductCategory</p>
+                        <p class="product-availability">Availability: @product.Availability</p>
+                        <form class="product-order-form" asp-controller="Order" asp-action="AddToOrder" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductID" />
+                            <input class="product-quantity" type="number" name="quantity" min="1" value="1" />
+                            <button class="add-to-order-btn" type="submit" disabled="@(!product.ProductAvailable)">Add to Order</button>
+                        </form>
+                    </div>
+                }
             </div>
-            <h3 class="work-item-name">Wooden Masks</h3>
-            <p class="work-item-price">R350.00 (incl VAT)</p>
-        </div>
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-plant.jpg" alt="Pot plants on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Pot Plants" data-price="235.00">Add to Cart</button>
-                </div>
-            </div>
-            <h3 class="work-item-name">Pot Plants</h3>
-            <p class="work-item-price">235.00 (incl VAT)</p>
-        </div>
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-pot.jpg" alt="Ceramic pots on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Ceramic Pots" data-price="150.00">Add to Cart</button>
-                </div>
-            </div>
-            <h3 class="work-item-name">Ceramic Pots</h3>
-            <p class="work-item-price">R150.00 (incl VAT)</p>
-        </div>
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-ring.jpg" alt="Ring on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Ring" data-price="1360.00">Add to Cart</button>
-                </div>
-            </div>
-            <h3 class="work-item-name">Ring</h3>
-            <p class="work-item-price">R1360.00 (incl VAT)</p>
-        </div>
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-vase.jpg" alt="Ceramic vases on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Ceramic Vases" data-price="200.00">Add to Cart</button>
-                </div>
-            </div>
-            <h3 class="work-item-name">Ceramic Vases</h3>
-            <p class="work-item-price">R200.00 (incl VAT)</p>
-        </div>
-        <div class="work-item">
-            <div class="work-item-image">
-                <img src="~/images/work-watch.jpg" alt="Black and gold analog watch on display" class="work-img" />
-                <div class="work-overlay">
-                    <button class="btn-add-to-cart" data-name="Analog Watch" data-price="2850.00">Add to Cart</button>
-                </div>
-            </div>
-            <h3 class="work-item-name">Analog Watch</h3>
-            <p class="work-item-price">R2850.00 (incl VAT)</p>
-        </div>
+        }
+        else
+        {
+            <p class="no-products-found">No products found.</p>
+        }
     </div>
-    <div id="floating-cart" class="floating-cart">
-        <i class="fa fa-shopping-cart"></i>
-        <span id="cart-item-count" class="item-count">0</span>
-    </div>
-    <div id="cart-overlay" class="cart-overlay">
-        <div class="cart-popup">
-            <button class="close-cart">&times;</button>
-            <h2>Your Cart</h2>
-            <ul class="cart-items"></ul>
-            <p class="cart-total">Total: R<span id="cart-total-amount">0.00</span></p>
-            <button class="btn-buy-now">Buy Now</button>
-        </div>
-    </div>
-</div>
--->
+</body>

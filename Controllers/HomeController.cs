@@ -21,11 +21,6 @@ namespace CLDVWebApp.Controllers
             return View();
         }
 
-        public IActionResult Work()
-        {
-            return View();
-        }
-
         public IActionResult About()
         {
             return View();
@@ -54,7 +49,7 @@ namespace CLDVWebApp.Controllers
         }
 
         // This is a test method to check if the WorkTest view is working
-        public IActionResult WorkTest()
+        public IActionResult Work()
         {
             var viewModel = new ProductViewModel
             {

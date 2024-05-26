@@ -1,11 +1,14 @@
 ﻿@model CLDVWebApp.Models.userTable
+
 @{
     ViewData["Title"] = "Sign Up";
 }
+
 <link rel="stylesheet" href="~/css/signup.css" />
-<h1>Sign Up</h1>
-<p>You need to sign up in the website for the application.</p>
-<body>
+
+<div class="signup-container">
+    <h1>Sign Up</h1>
+    <p>You need to sign up on the website for the application.</p>
     <form asp-controller="User" asp-action="SignUp" method="post">
         <p>Sign Up</p>
         <input type="text" name="Name" placeholder="Name" required>
@@ -13,32 +16,34 @@
         <input type="text" name="Email" placeholder="example@gmail.com" required>
         <input type="password" name="Password" id="password" placeholder="Password" required>
         <input type="password" name="Password2" id="confirm-password" placeholder="Please confirm your password" required>
-        </br>
+        <br />
         <input type="checkbox" id="password-toggle"> Show Password
         <span id="password-error" style="color: red; display: none;">Passwords do not match.</span>
         <button type="submit">Submit</button>
     </form>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var form = document.querySelector("form");
-            var password = document.getElementById("password");
-            var confirmPassword = document.getElementById("confirm-password");
-            var passwordToggle = document.getElementById("password-toggle");
+</div>
 
-            form.addEventListener("submit", function (event) {
-                if (password.value !== confirmPassword.value) {
-                    event.preventDefault();
-                    document.getElementById("password-error").style.display = "inline";
-                    confirmPassword.focus();
-                } else {
-                    document.getElementById("password-error").style.display = "none";
-                }
-            });
-            passwordToggle.addEventListener("change", function () {
-                var type = this.checked ? "text" : "password";
-                password.type = type;
-                confirmPassword.type = type;
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var form = document.querySelector("form");
+        var password = document.getElementById("password");
+        var confirmPassword = document.getElementById("confirm-password");
+        var passwordToggle = document.getElementById("password-toggle");
+
+        form.addEventListener("submit", function (event) {
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+                document.getElementById("password-error").style.display = "inline";
+                confirmPassword.focus();
+            } else {
+                document.getElementById("password-error").style.display = "none";
+            }
         });
-    </script>
-</body>
+
+        passwordToggle.addEventListener("change", function () {
+            var type = this.checked ? "text" : "password";
+            password.type = type;
+            confirmPassword.type = type;
+        });
+    });
+</script>

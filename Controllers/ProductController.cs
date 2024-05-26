@@ -10,7 +10,7 @@ namespace CLDVWebAppST10046280.Controllers
         private productTable prdtbl = new productTable();
 
         [HttpPost]
-        public ActionResult WorkTest(productTable Products)
+        public ActionResult Work(productTable Products)
         {
             // Handle both comma and period as decimal separators
             string priceString = Products.Price.ToString().Replace(',', '.');
@@ -30,7 +30,7 @@ namespace CLDVWebAppST10046280.Controllers
             var result = prdtbl.insert_Product(Products);
             if (result > 0)
             {
-                return RedirectToAction("WorkTest", "Home");
+                return RedirectToAction("Work", "Home");
             }
             else
             {
@@ -40,7 +40,7 @@ namespace CLDVWebAppST10046280.Controllers
         }
 
         [HttpGet]
-        public ActionResult WorkTest()
+        public ActionResult Work()
         {
             return View(prdtbl);
         }

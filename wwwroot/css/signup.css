@@ -1,24 +1,43 @@
 ﻿/* Sign Up Form Styles */
-body {
+.signup-container {
     background-color: var(--kc-main-bg);
     color: var(--kc-main-text);
     font-family: 'Arial', sans-serif;
-    text-align: center;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
 }
+
+    .signup-container h1 {
+        margin-bottom: 15px;
+        font-size: 2.5em;
+        font-weight: bold;
+        color: var(--kc-main-text);
+    }
+
+    .signup-container p {
+        margin-bottom: 20px;
+        font-size: 1.1em;
+        color: var(--kc-secondary-text);
+    }
 
 form {
     background-color: var(--kc-secondary-bg);
-    padding: 20px;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
-    margin: 20px auto;
+    width: 100%;
+    text-align: center;
 }
 
     form p {
         margin-bottom: 15px;
-        font-size: 24px;
+        font-size: 1.5em;
         font-weight: bold;
         color: var(--kc-main-text);
     }
@@ -54,3 +73,14 @@ button {
     button:hover {
         background-color: var(--kc-highlight-color);
     }
+
+#password-toggle {
+    margin-bottom: 20px;
+}
+
+#password-error {
+    color: var(--kc-error-color);
+    display: none;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
