@@ -64,6 +64,10 @@ nav {
     color: var(--kc-accent-text);
 }
 
+.nav-link.active { 
+    color: var(--kc-highlight-color));   
+}
+
 .kc-footer {
     background-color: var(--kc-footer-bg);
     color: var(--kc-secondary-text);

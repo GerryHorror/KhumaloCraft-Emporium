@@ -9,6 +9,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+    @{
+        var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+    }
+
     <header class="kc-header">
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: var(--kc-navbar-bg);">
             <div class="container">
@@ -19,37 +24,36 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "Index" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "About" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="About">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WorkTest">My Work (Test)</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "WorkTest" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="WorkTest">My Work (Test)</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "Contact" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="SignUp">Sign Up</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "SignUp" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="SignUp">Sign Up</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                            <a class="nav-link @(currentController == "Home" && currentAction == "Login" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
                         </li>
-                        @if (Context.Session.GetInt32("UserId") != null) // This only shows if the user is logged in
+                        @if (Context.Session.GetInt32("UserId") != null)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Orders">Orders</a>
+                                <a class="nav-link @(currentController == "Home" && currentAction == "Orders" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Orders">Orders</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Transactions">Transactions</a>
+                                <a class="nav-link @(currentController == "Home" && currentAction == "Transactions" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Transactions">Transactions</a>
                             </li>
                         }
                     </ul>
                 </div>
             </div>
         </nav>
-
     </header>
     <div class="container">
         <main role="main" class="pb-3">
