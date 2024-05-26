@@ -44,6 +44,9 @@
                         @if (Context.Session.GetInt32("UserId") != null)
                         {
                             <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Login" asp-action="Logout">Log Out</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link @(currentController == "Home" && currentAction == "Orders" ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Orders">Orders</a>
                             </li>
                             <li class="nav-item">

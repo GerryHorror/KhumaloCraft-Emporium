@@ -7,6 +7,12 @@ namespace CLDVWebAppST10046280.Controllers
 {
     public class LoginController : Controller
     {
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
+        }
+
         [HttpPost]
         public IActionResult Login(string email, string password)
         {
