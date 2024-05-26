@@ -36,66 +36,30 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 //<-------------------------------------------------------------------------------------->
-//document.addEventListener("DOMContentLoaded", function () {
-//    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+// Password Confirmation Validation and Password Toggle for Signup Page
+// Code based off: https://www.w3schools.com/howto/howto_js_password_validation.asp
+document.addEventListener("DOMContentLoaded", function () {
+    var form = document.querySelector(".signup-form");
+    if (form) {
+        var password = document.getElementById("password");
+        var confirmPassword = document.getElementById("confirm-password");
+        var passwordToggle = document.getElementById("password-toggle");
 
-//    updateCartUI();
+        form.addEventListener("submit", function (event) {
+            if (password.value !== confirmPassword.value) {
+                event.preventDefault();
+                document.getElementById("password-error").style.display = "inline";
+                confirmPassword.focus();
+            } else {
+                document.getElementById("password-error").style.display = "none";
+            }
+        });
 
-//    window.addToCart = function (productId, productName, productPrice, quantity) {
-//        let existingItem = cart.find(item => item.productId === productId);
-//        if (existingItem) {
-//            existingItem.quantity += quantity;
-//        } else {
-//            cart.push({ productId, productName, productPrice, quantity });
-//        }
-//        localStorage.setItem("cart", JSON.stringify(cart));
-//        updateCartUI();
-//    };
-
-//    function updateCartUI() {
-//        let cartItems = document.getElementById("cartItems");
-//        let cartTotal = document.getElementById("cartTotal");
-//        cartItems.innerHTML = "";
-//        let total = 0;
-//        cart.forEach(item => {
-//            total += item.productPrice * item.quantity;
-//            let li = document.createElement("li");
-//            li.textContent = `${item.productName} - ${item.quantity} x ${item.productPrice.toFixed(2)}`;
-//            cartItems.appendChild(li);
-//        });
-//        cartTotal.textContent = total.toFixed(2);
-//        document.getElementById("floatingCart").style.display = cart.length > 0 ? "block" : "none";
-//    }
-
-//    window.checkout = function () {
-//        if (cart.length === 0) {
-//            alert("Your cart is empty!");
-//            return;
-//        }
-
-//        fetch('/Order/FinalizeOrder', {
-//            method: 'POST',
-//            headers: {
-//                'Content-Type': 'application/json'
-//            },
-//            body: JSON.stringify(cart)
-//        })
-//            .then(response => response.json())
-//            .then(data => {
-//                if (data.success) {
-//                    alert("Order placed successfully!");
-//                    cart = [];
-//                    localStorage.setItem("cart", JSON.stringify(cart));
-//                    updateCartUI();
-//                    window.location.href = "/Order/OrderConfirmation";
-//                } else {
-//                    alert("Error placing order: " + data.message);
-//                }
-//            })
-//            .catch(error => {
-//                console.error('Error:', error);
-//                alert("An error occurred while placing your order.");
-//            });
-//    };
-//});
+        passwordToggle.addEventListener("change", function () {
+            var type = this.checked ? "text" : "password";
+            password.type = type;
+            confirmPassword.type = type;
+        });
+    }
+});
 //<--------------------------------------END---------------------------------------------->

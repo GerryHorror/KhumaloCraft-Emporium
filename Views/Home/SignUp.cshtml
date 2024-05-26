@@ -7,10 +7,8 @@
 <link rel="stylesheet" href="~/css/signup.css" />
 
 <div class="signup-container">
-    <h1>Sign Up</h1>
-    <p>You need to sign up on the website for the application.</p>
-    <form asp-controller="User" asp-action="SignUp" method="post">
-        <p>Sign Up</p>
+    <form class="signup-form" asp-controller="User" asp-action="SignUp" method="post">
+        <h1>Sign Up</h1>
         <input type="text" name="Name" placeholder="Name" required>
         <input type="text" name="Surname" placeholder="Surname" required>
         <input type="text" name="Email" placeholder="example@gmail.com" required>
@@ -21,29 +19,6 @@
         <span id="password-error" style="color: red; display: none;">Passwords do not match.</span>
         <button type="submit">Submit</button>
     </form>
+    <p class="login-message">Already have an account? <a asp-controller="Home" asp-action="Login">Login here</a>.</p>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var form = document.querySelector("form");
-        var password = document.getElementById("password");
-        var confirmPassword = document.getElementById("confirm-password");
-        var passwordToggle = document.getElementById("password-toggle");
-
-        form.addEventListener("submit", function (event) {
-            if (password.value !== confirmPassword.value) {
-                event.preventDefault();
-                document.getElementById("password-error").style.display = "inline";
-                confirmPassword.focus();
-            } else {
-                document.getElementById("password-error").style.display = "none";
-            }
-        });
-
-        passwordToggle.addEventListener("change", function () {
-            var type = this.checked ? "text" : "password";
-            password.type = type;
-            confirmPassword.type = type;
-        });
-    });
-</script>

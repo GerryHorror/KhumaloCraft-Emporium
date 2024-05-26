@@ -3,92 +3,17 @@
 @{
     ViewData["Title"] = "Login";
 }
+<link rel="stylesheet" href="~/css/login.css"/>
 
-<style>
-    .login-page {
-        font-family: 'Arial', sans-serif;
-        background: var(--kc-main-bg);
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        align-content: center;
-        min-height: 100vh; 
-    }
-
-    .login-form {
-        background-color: var(--kc-secondary-bg);
-        padding: 3rem;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-
-        .login-form h1 {
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
-            color: var(--kc-main-text);
-        }
-
-        .login-form input {
-            width: 100%;
-            padding: 0.75rem;
-            margin: 0.5rem 0;
-            border: 1px solid var(--kc-secondary-text);
-            border-radius: 5px;
-            font-size: 1rem;
-            color: var(--kc-main-text);
-            background-color: var(--kc-main-bg);
-        }
-
-            .login-form input::placeholder {
-                color: var(--kc-secondary-text);
-            }
-
-        .login-form button {
-            width: 100%;
-            padding: 0.75rem;
-            margin: 1rem 0;
-            border: none;
-            border-radius: 5px;
-            background-color: var(--kc-button-bg);
-            color: var(--kc-button-text);
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-            .login-form button:hover {
-                background-color: var(--kc-highlight-color);
-            }
-
-    .error-message {
-        width: 100%;
-        padding: 0.75rem;
-        margin: 1rem 0;
-        color: var(--kc-error-color);
-        background-color: var(--kc-secondary-bg);
-        border: 1px solid var(--kc-error-color);
-        border-radius: 5px;
-    }
-
-</style>
-
-<body class="login-page">
-    <form id="loginForm" asp-controller="Login" asp-action="Login" method="post" class="login-form">
-        <h1>Login</h1>
-        @Html.ValidationSummary(true, "", new { @class = "error-message" })
-        <input type="text" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
-    </form>
+<body>
+    <div class="login-container">
+        <form class="login-form" asp-controller="Login" asp-action="Login" method="post">
+            <h1>Login</h1>
+            @Html.ValidationSummary(true, "", new { @class = "error-message" })
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <p>Don't have an account? <a asp-controller="Home" asp-action="SignUp">Sign up here</a>.</p>
+        </form>   
+    </div>
 </body>
