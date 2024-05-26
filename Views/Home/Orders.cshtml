@@ -4,15 +4,15 @@
     ViewData["Title"] = "Orders";
 }
 <
-<link rel="stylesheet" href="~/css/orders.css" />
+<link rel="stylesheet" href="~/css/order.css"/>
 
+<div class="order-container">
 <h2>Orders</h2>
 
 @if (Model != null && Model.Count > 0)
 {
     @foreach (var order in Model)
-    {
-        <div class="order-container">
+    {        
             <h3>Order ID: @order.OrderID</h3>
             <p>Status: @order.OrderStatus</p>
             <p>Total: @order.OrderTotal.ToString("C")</p>
@@ -65,10 +65,10 @@
                     }
                 </tbody>
             </table>
-        </div>
     }
 }
 else
 {
     <p>No orders found.</p>
 }
+</div>
