@@ -33,7 +33,7 @@
                     <div class="product-item">
                         <h2 class="product-name">@product.ProductName</h2>
                         <p class="product-id">ID: @product.ProductID</p>
-                        <p class="product-price">Price: @product.ProductPrice</p>
+                        <p class="product-price">Price: @product.ProductPrice.ToString("C")</p>
                         <p class="product-category">Category: @product.ProductCategory</p>
                         <p class="product-availability">Availability: @product.Availability</p>
                         <form class="product-order-form" asp-controller="Order" asp-action="AddToOrder" method="post">
