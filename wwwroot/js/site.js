@@ -63,6 +63,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 //<-------------------------------------------------------------------------------------->
+// Password Toggle for Login Page
+// Code based off: https://www.w3schools.com/howto/howto_js_password_validation.asp
+document.addEventListener("DOMContentLoaded", function () {
+    var password = document.getElementById("password");
+    var passwordToggle = document.getElementById("password-toggle");
+
+    passwordToggle.addEventListener("change", function () {
+        var type = this.checked ? "text" : "password";
+        password.type = type;
+    });
+});
+//<-------------------------------------------------------------------------------------->
 // Form Submission using AJAX for Transaction Page
 // Code based off: https://www.w3schools.com/howto/howto_js_form_steps.asp
 function submitForm(form) {
