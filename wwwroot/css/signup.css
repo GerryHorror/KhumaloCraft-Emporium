@@ -1,6 +1,4 @@
 ﻿/* Sign Up Form Styles */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
 .signup-container {
     background-color: var(--kc-main-bg);
     color: var(--kc-main-text);
@@ -69,7 +67,8 @@
         }
 
     .signup-form #password-toggle {
-        margin-bottom: 20px;
+        margin-bottom: 1rem;
+        cursor: pointer;
     }
 
     .signup-form #password-error {
@@ -83,7 +82,7 @@
     margin-top: 1rem;
     font-size: 1rem;
     color: var(--kc-secondary-text);
-    font-weight: normal; /* Add this line */
+    font-weight: normal;
 }
 
     .login-message a {

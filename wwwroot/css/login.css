@@ -1,6 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
-.login-container {
+﻿.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,6 +80,19 @@
 
     .login-form a:hover {
         text-decoration: underline;
+    }
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+    .checkbox-container input[type="checkbox"] {
+        margin-right: 0.5rem;
+    }
+
+    .checkbox-container label {
+        white-space: nowrap;
     }
 
 @media (max-width: 600px) {
